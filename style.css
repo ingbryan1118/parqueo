@@ -1,0 +1,14 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff;
+}
+
+a {
+    color: black;
+   
+}
+
+a:hover {
+    color: #007bff;
+}
