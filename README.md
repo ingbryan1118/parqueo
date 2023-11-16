@@ -10,7 +10,7 @@ el programa realiza lo siguiente:
 - creacion e impresion de ticket 
 - calcula el tiempo del parqueo
 - reporte diario de placas 
-Realiazado con las siguientes tecnologias PHP, mysql, boostrap, jquery javascript
+Realiazado con las siguientes tecnologias PHP, javascript, mysql, boostrap, jquery 
 # Nota: Pendiente a mejorar estado del proyecto en proceso 
 # Nota: Pendiente a mejora la estructura del proyecto
 # Nota: pendiente actualizar a Node y React
