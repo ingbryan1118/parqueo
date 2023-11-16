@@ -212,6 +212,52 @@ if (isset($_SESSION['correo'])) {
     <!-- Agrega los enlaces a Bootstrap JS y jQuery (debes incluir jQuery antes de Bootstrap JS) -->
 
 
+
+    <script>
+        function actualizarCosto(id) {
+            var nuevoCosto = document.getElementById("costoInput_" + id).value;
+
+            $.ajax({
+                type: "POST",
+                url: "../controllers/actualizar_tarifa.php",
+                data: {
+                    id: id,
+                    nuevoCosto: nuevoCosto
+                },
+                success: function(response) {
+                    alert(response);
+                    // Puedes recargar la página o actualizar solo la fila de la tabla con JavaScript.
+                },
+                error: function(error) {
+                    console.error("Error al actualizar el costo: " + error.responseText);
+                }
+            });
+        }
+
+        function eliminarRegistro(registroId) {
+            if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "../controllers/eliminar_tarifa.php",
+                    data: {
+                        id: registroId
+                    },
+                    success: function(response) {
+                        alert(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error("Error al eliminar el registro: " + error.responseText);
+                    }
+                });
+            }
+        }
+    </script>
+
+
+
+
+
     <script src="../jquery/jquery-3.5.1.min.js"></script>
     <script src="../jquery/popper.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>

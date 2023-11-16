@@ -81,6 +81,3 @@ WHERE fecha_ingreso = '$selectedDate'";
     header('Location: ' . $file_name);
     exit;
 }
-
-
-?>

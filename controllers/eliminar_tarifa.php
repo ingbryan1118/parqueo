@@ -16,7 +16,7 @@ if (isset($_POST['id'])) {
     $registroId = $_POST['id'];
 
     // Consulta SQL para eliminar el registro
-    $sql = "DELETE FROM parqueo WHERE id = $registroId";
+    $sql = "DELETE FROM tarifas WHERE id = $registroId";
 
     if ($conn->query($sql) === TRUE) {
         echo "Registro eliminado con éxito.";
@@ -28,3 +28,4 @@ if (isset($_POST['id'])) {
 }
 
 $conn->close();
+?>

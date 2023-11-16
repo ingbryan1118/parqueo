@@ -52,4 +52,3 @@ $horaIngreso = date("H:i:s");
 
     $conn->close();
 }
-?>

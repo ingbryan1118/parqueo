@@ -38,4 +38,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Redirigir si el formulario no se envió
     header("Location: index.html");
 }
-?>

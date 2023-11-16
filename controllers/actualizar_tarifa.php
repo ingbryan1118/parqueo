@@ -15,7 +15,7 @@ if (isset($_POST['id']) && isset($_POST['nuevoCosto'])) {
     $id = $_POST['id'];
     $nuevoCosto = $_POST['nuevoCosto'];
 
-    $sql = "UPDATE parqueo SET costo = $nuevoCosto WHERE id = $id";
+    $sql = "UPDATE tarifas SET valorTarifa = $nuevoCosto WHERE id = $id";
 
     if ($conn->query($sql) === true) {
         echo "El costo se ha actualizado correctamente.";

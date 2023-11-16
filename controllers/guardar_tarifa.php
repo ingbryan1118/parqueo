@@ -33,4 +33,3 @@ $valorTarifa = $_POST["valorTarifa"];
 
     $conn->close();
 }
-?>

@@ -80,11 +80,11 @@ if (isset($_SESSION['correo'])) {
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                //             echo '<li class="nav-item">
-                //     <a class="nav-link" href="reporte.php">
-                //         <i class="fa fa-sign-out"></i> Reporte
-                //     </a>
-                //   </li>';
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">
@@ -92,7 +92,7 @@ if (isset($_SESSION['correo'])) {
                   </a>
                 </li>';
 
-                echo '<li class="nav-item">
+                            echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
                   </a>
@@ -129,12 +129,12 @@ if (isset($_SESSION['correo'])) {
                         <div class="col-md-8 ">
                             <h2 class="text-center">Registro de Placas</h2>
                             <form method="POST" action="../controllers/guardar_parqueo.php">
-    <!-- Formulario de Parqueo -->
-    <div class="form-group">
-        <label for="placa">Ingrese la Placa:</label>
-        <input type="text" class="form-control" id="placa" name="placa" required>
-    </div>
-    <!-- <div class="form-group">
+                                <!-- Formulario de Parqueo -->
+                                <div class="form-group">
+                                    <label for="placa">Ingrese la Placa:</label>
+                                    <input type="text" class="form-control" id="placa" name="placa" required>
+                                </div>
+                                <!-- <div class="form-group">
         <label for="tipo_parqueo">Tipo de Parqueo:</label>
         <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>
             <option value="1">Vehiculo</option>
@@ -144,32 +144,32 @@ if (isset($_SESSION['correo'])) {
         </select>
     </div> -->
 
-    <?php
-// Hacer la consulta SQL
-$sql = "SELECT id, nombreTarifa, valorTarifa FROM tarifas";
-$result = $conn->query($sql);
+                                <?php
+                                // Hacer la consulta SQL
+                                $sql = "SELECT id, nombreTarifa, valorTarifa FROM tarifas";
+                                $result = $conn->query($sql);
 
-// Verificar si hay resultados
-if ($result->num_rows > 0) {
-    echo '<div class="form-group"> <label for="tipo_parqueo">Tipo de Parqueo:</label> <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>';
-    while ($row = $result->fetch_assoc()) {
-        echo '<option value="' . $row["id"] . '">' . $row["nombreTarifa"] . '</option>';
-    }
-    echo '</select> </div>';
-} else {
-    echo "No hay datos en la tabla tarifas";
-}
+                                // Verificar si hay resultados
+                                if ($result->num_rows > 0) {
+                                    echo '<div class="form-group"> <label for="tipo_parqueo">Tipo de Parqueo:</label> <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>';
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo '<option value="' . $row["id"] . '">' . $row["nombreTarifa"] . '</option>';
+                                    }
+                                    echo '</select> </div>';
+                                } else {
+                                    echo "No hay datos en la tabla tarifas";
+                                }
 
-// Cerrar la conexión
-$conn->close();
-?>
+                                // Cerrar la conexión
+                                $conn->close();
+                                ?>
 
-    <!-- <div class="form-group">
+                                <!-- <div class="form-group">
         <label for="hora_ingreso">Hora de Ingreso (HH:MM):</label>
         <input type="text" class="form-control" id="hora_ingreso" name="hora_ingreso" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Ingrese la hora en formato HH:MM" required>
     </div> -->
-    <button type="submit" class="btn btn-primary">Registrar Parqueo</button>
-</form>
+                                <button type="submit" class="btn btn-primary">Registrar Parqueo</button>
+                            </form>
 
                         </div>
 

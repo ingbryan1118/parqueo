@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Iniciar sesión</title>
     <!-- Agregar enlace al archivo CSS de Bootstrap -->
@@ -7,12 +8,13 @@
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../style.css">
 </head>
+
 <body>
     <div class="container">
 
-    
+
         <h2>Iniciar sesión</h2>
-        
+
         <form action="procesar_login.php" method="POST">
             <div class="form-group">
                 <label for="correo">Correo electrónico:</label>
@@ -29,8 +31,9 @@
     </div>
 
     <!-- Agregar enlace al archivo JavaScript de Bootstrap (opcional) -->
-   
-    <script src="../bootstrap/js/bootstrap.min.js"></script> 
+
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 </body>
+
 </html>

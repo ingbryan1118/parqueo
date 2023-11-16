@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@ $tipoUsuario = isset($_SESSION['tipo_usuario']) ? $_SESSION['tipo_usuario'] : nu
 
 if (isset($_SESSION['correo'])) {
     // El usuario está autenticado, muestra el contenido 
- 
+
 } else {
     header("Location: login.php");
 }
@@ -53,18 +54,18 @@ if (isset($_SESSION['correo'])) {
                         </li>
 
                         <li class="nav-item">
-                    <a class="nav-link" href="reporte.php">
-                        <i class="fa fa-sign-out"></i> Reporte
-                    </a>
-                  </li>
+                            <a class="nav-link" href="reporte.php">
+                                <i class="fa fa-sign-out"></i> Reporte
+                            </a>
+                        </li>
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                //             echo '<li class="nav-item">
-                //     <a class="nav-link" href="reporte.php">
-                //         <i class="fa fa-sign-out"></i> Reporte
-                //     </a>
-                //   </li>';
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">
@@ -73,7 +74,7 @@ if (isset($_SESSION['correo'])) {
                 </li>';
 
 
-                echo '<li class="nav-item">
+                            echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
                   </a>
@@ -100,13 +101,13 @@ if (isset($_SESSION['correo'])) {
             <!-- Contenido principal -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="container mt-5">
-                    
-                    
+
+
                     <div class="row">
                         <div class="col-md-8 ">
-                        <h2 class="text-center">Mensual - Gratis</h2>
+                            <h2 class="text-center">Mensual - Gratis</h2>
                             <form method="POST" action="../controllers/crea_VehiculoMensual.php">
-                            <!-- <form id="parqueoForm"> -->
+                                <!-- <form id="parqueoForm"> -->
                                 <div class="form-group">
                                     <label for="placa">Placa del Vehículo:</label>
                                     <input type="text" class="form-control" id="placa" name="placa" required>
@@ -133,31 +134,31 @@ if (isset($_SESSION['correo'])) {
                             </form>
                         </div>
 
-                       
-                    </div>
-                    
-                    <?php
-        
-            if (isset($_GET["exito"]) && $_GET["exito"] == 1) {
 
-                echo '<div class="alert alert-success mt-3 alert-dismissible fade show">
+                    </div>
+
+                    <?php
+
+                    if (isset($_GET["exito"]) && $_GET["exito"] == 1) {
+
+                        echo '<div class="alert alert-success mt-3 alert-dismissible fade show">
                 Parqueo Exitoso
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>';
-            }
+                    }
 
-            if (isset($_GET["error"]) && $_GET["error"] == 1) {
-                echo '<div class="alert alert-danger mt-3 alert-dismissible fade show">
+                    if (isset($_GET["error"]) && $_GET["error"] == 1) {
+                        echo '<div class="alert alert-danger mt-3 alert-dismissible fade show">
                 Error: Placa ya ingresada para el mes actual
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>';
-            }
-                        
-            ?>
+                    }
+
+                    ?>
                 </div>
             </main>
         </div>
@@ -167,7 +168,7 @@ if (isset($_SESSION['correo'])) {
 
     <script src="../jquery/jquery-3.5.1.min.js"></script>
     <script src="../jquery/popper.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script> 
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->

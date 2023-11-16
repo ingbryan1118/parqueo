@@ -55,19 +55,19 @@ if (isset($_SESSION['correo'])) {
                         </li>
 
                         <li class="nav-item">
-                    <a class="nav-link" href="reporte.php">
-                        <i class="fa fa-sign-out"></i> Reporte
-                    </a>
-                  </li>
+                            <a class="nav-link" href="reporte.php">
+                                <i class="fa fa-sign-out"></i> Reporte
+                            </a>
+                        </li>
 
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                //             echo '<li class="nav-item">
-                //     <a class="nav-link" href="reporte.php">
-                //         <i class="fa fa-sign-out"></i> Reporte
-                //     </a>
-                //   </li>';
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">
@@ -75,7 +75,7 @@ if (isset($_SESSION['correo'])) {
                   </a>
                 </li>';
 
-                echo '<li class="nav-item">
+                            echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
                   </a>
@@ -218,7 +218,7 @@ if (isset($_SESSION['correo'])) {
     <script src="../jquery/jquery-3.5.1.min.js"></script>
     <script src="../jquery/popper.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
-     
+
     <script>
         // Función para abrir la ventana emergente del ticket y calcular el costo total
         function abrirTicket(placa, horaIngreso, tipo_parqueo) {

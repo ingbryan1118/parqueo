@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barra de Navegación Vertical</title>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-    
+
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../style.css">
 </head>
@@ -67,11 +67,11 @@ if (isset($_SESSION['correo'])) {
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                //             echo '<li class="nav-item">
-                //     <a class="nav-link" href="reporte.php">
-                //         <i class="fa fa-sign-out"></i> Reporte
-                //     </a>
-                //   </li>';
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">
@@ -79,14 +79,14 @@ if (isset($_SESSION['correo'])) {
                   </a>
                 </li>';
 
-                echo '<li class="nav-item">
+                            echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
                   </a>
                 </li>';
                         }
 
-                       ?>
+                        ?>
 
                         <li class="nav-item">
                             <a class="nav-link" href="login.php">
@@ -106,12 +106,12 @@ if (isset($_SESSION['correo'])) {
             <!-- Contenido principal -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="container mt-5">
-                <h2 class="text-center">Reportes</h2>
+                    <h2 class="text-center">Reportes</h2>
 
                     <div class="row">
-                    
+
                         <div class="col-md-4">
-                            
+
                             <form id="fechaForm" method="POST" action="../controllers/generar_informe.php">
                                 <div class="form-group">
                                     <label for="fecha">Selecciona una fecha:</label>
@@ -120,11 +120,11 @@ if (isset($_SESSION['correo'])) {
                                 <button type="submit" class="btn btn-primary">Generar Informe</button>
                             </form>
 
-                            
+
 
                         </div>
                         <div class="col-md-4">
-                        <!-- <form id="fechaForm" method="POST" action="generar_informe.php">
+                            <!-- <form id="fechaForm" method="POST" action="generar_informe.php">
                             <div class="form-group">
                                 <label for="fecha">Selecciona un mes:</label>
                                 <select name="month">
@@ -160,7 +160,7 @@ if (isset($_SESSION['correo'])) {
  -->
     <script src="../jquery/jquery-3.5.1.min.js"></script>
     <script src="../jquery/popper.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script> 
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->

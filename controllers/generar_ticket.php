@@ -74,4 +74,3 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
 } else {
     echo "La placa del vehículo no se ha proporcionado.";
 }
-?>
