@@ -44,18 +44,39 @@ if (isset($_SESSION['correo'])) {
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
+
+                        <?php
+                        // Lógica condicional para ocultar elementos según el tipo de usuario
+                        if ($tipoUsuario != 2) {
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
+
+                            echo '<li class="nav-item">
+                  <a class="nav-link" href="creaplaca.php">
+                      <i class="fa fa-sign-out"></i> Crear Placa
+                  </a>
+                </li>';
+
+
+                echo '<li class="nav-item">
+                  <a class="nav-link" href="verplacas.php">
+                      <i class="fa fa-sign-out"></i> Ver Placas
+                  </a>
+                </li>';
+                        
+                        }
+                
+                        ?>
+
+
                         <li class="nav-item">
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="creaVehiculo.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo Mensual
-                            </a>
-                        </li>
-
 
                         <li class="nav-item">
                             <a class="nav-link" href="parqueo.php">
@@ -91,7 +112,6 @@ if (isset($_SESSION['correo'])) {
                       <i class="fa fa-sign-out"></i> Crear Usuario
                   </a>
                 </li>';
-
                             echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
@@ -127,47 +147,34 @@ if (isset($_SESSION['correo'])) {
 
                     <div class="row">
                         <div class="col-md-8 ">
-                            <h2 class="text-center">Registro de Placas</h2>
+                            <h2 class="text-center">Registro de ingreso al parqueadero</h2>
                             <form method="POST" action="../controllers/guardar_parqueo.php">
                                 <!-- Formulario de Parqueo -->
                                 <div class="form-group">
                                     <label for="placa">Ingrese la Placa:</label>
                                     <input type="text" class="form-control" id="placa" name="placa" required>
                                 </div>
-                                <!-- <div class="form-group">
-        <label for="tipo_parqueo">Tipo de Parqueo:</label>
-        <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>
-            <option value="1">Vehiculo</option>
-            <option value="2">Moto</option>
-            <option value="3">$5,000</option>
-            <option value="4">$8,000</option>
-        </select>
-    </div> -->
 
-                                <?php
-                                // Hacer la consulta SQL
-                                $sql = "SELECT id, nombreTarifa, valorTarifa FROM tarifas";
-                                $result = $conn->query($sql);
 
-                                // Verificar si hay resultados
-                                if ($result->num_rows > 0) {
-                                    echo '<div class="form-group"> <label for="tipo_parqueo">Tipo de Parqueo:</label> <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>';
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo '<option value="' . $row["id"] . '">' . $row["nombreTarifa"] . '</option>';
-                                    }
-                                    echo '</select> </div>';
-                                } else {
-                                    echo "No hay datos en la tabla tarifas";
-                                }
+                                <!-- <?php
+                                        // Hacer la consulta SQL
+                                        $sql = "SELECT id, nombreTarifa, valorTarifa FROM tarifas";
+                                        $result = $conn->query($sql);
 
-                                // Cerrar la conexión
-                                $conn->close();
-                                ?>
+                                        // Verificar si hay resultados
+                                        if ($result->num_rows > 0) {
+                                            echo '<div class="form-group"> <label for="tipo_parqueo">Tipo de Parqueo:</label> <select class="form-control" id="tipo_parqueo" name="tipo_parqueo" required>';
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . $row["id"] . '">' . $row["nombreTarifa"] . '</option>';
+                                            }
+                                            echo '</select> </div>';
+                                        } else {
+                                            echo "No hay datos en la tabla tarifas";
+                                        }
 
-                                <!-- <div class="form-group">
-        <label for="hora_ingreso">Hora de Ingreso (HH:MM):</label>
-        <input type="text" class="form-control" id="hora_ingreso" name="hora_ingreso" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Ingrese la hora en formato HH:MM" required>
-    </div> -->
+                                        // Cerrar la conexión
+                                        $conn->close();
+                                        ?> -->
                                 <button type="submit" class="btn btn-primary">Registrar Parqueo</button>
                             </form>
 
@@ -182,6 +189,16 @@ if (isset($_SESSION['correo'])) {
 
                         echo '<div class="alert alert-success mt-3 alert-dismissible fade show">
                 Parqueo Exitoso
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+                    }
+
+                    if (isset($_GET["error"]) && $_GET["error"] == 1) {
+
+                        echo '<div class="alert alert-danger mt-3 alert-dismissible fade show">
+                No esta la placa en la base de datos
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

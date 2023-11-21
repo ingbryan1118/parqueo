@@ -17,7 +17,23 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM parqueo WHERE placa = '$placaBuscada' AND fecha_salida IS NULL AND fecha_ingreso = CURDATE()";
+    // $sql = "SELECT *
+    // FROM parqueo
+    // WHERE placa = '$placaBuscada'
+    //   AND fecha_salida IS NULL
+    //   AND fecha_ingreso = CURDATE()
+    // ORDER BY id DESC
+    // LIMIT 1";
+
+    $sql = "SELECT parqueo.*, tarifas.valorTarifa
+    FROM parqueo
+    JOIN tarifas ON parqueo.tipo_parqueo = tarifas.id
+    WHERE parqueo.placa = '$placaBuscada'
+      AND parqueo.fecha_salida IS NULL
+      AND parqueo.fecha_ingreso = CURDATE()
+    ORDER BY parqueo.id DESC
+    LIMIT 1 ";
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -26,6 +42,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
         $placa = $row["placa"];
         $fechaIngreso = date("Y-m-d", strtotime($row["fecha_ingreso"]));
         $horaIngreso = $row["hora_ingreso"];
+        $valorTarifa = $row["valorTarifa"];
 
         // Cierra la conexión a la base de datos
         $conn->close();
@@ -55,6 +72,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
                 <p><strong>Placa:</strong> $placa</p>
                 <p><strong>Fecha de Ingreso:</strong> $fechaIngreso</p>
                 <p><strong>Hora de Ingreso:</strong> $horaIngreso</p>
+                <p><strong>Valor Tarifa:</strong> $valorTarifa</p>
                 <!-- Agrega otros detalles del ticket aquí -->
             </div>
             <script>

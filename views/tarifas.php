@@ -34,18 +34,33 @@ if (isset($_SESSION['correo'])) {
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
+
+                        <?php
+                        // Lógica condicional para ocultar elementos según el tipo de usuario
+                        if ($tipoUsuario != 2) {
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
+
+                            echo '<li class="nav-item">
+                  <a class="nav-link" href="creaplaca.php">
+                      <i class="fa fa-sign-out"></i> Crear Placa
+                  </a>
+                </li>';
+
+                echo '<li class="nav-item">
+                  <a class="nav-link" href="verplacas.php">
+                      <i class="fa fa-sign-out"></i> Ver Placas
+                  </a>
+                </li>';
+                        }
+                        ?>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="creaVehiculo.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo Mensual
-                            </a>
-                        </li>
-
-
                         <li class="nav-item">
                             <a class="nav-link" href="parqueo.php">
                                 <i class="fa fa-list"></i> Lista de parqueo
@@ -164,12 +179,13 @@ if (isset($_SESSION['correo'])) {
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
                                                 echo "<tr>";
-                                                echo "<td>" . $row["nombreTarifa"] . "</td>";
-                                                echo "<td><input type='number' class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["valorTarifa"] . "'></td>";
+                                                //echo "<td>" . $row["nombreTarifa"] . "</td>";
+                                                echo "<td><input type='text' readonly class='form-control' id='nombreInput_" . $row["id"] . "' value='" . $row["nombreTarifa"] . "'></td>";
+                                                echo "<td><input type='number' readonly class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["valorTarifa"] . "'></td>";
                                                 if ($tipoUsuario != 2) {
-
-                                                    echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
-                                                    echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(" . $row["id"] . ")'>Eliminar</button></td>";
+                                                    echo "<td><button class='btn btn-success btn-sm' data-toggle='modal' data-target='#formularioModal' onclick='abrirFormulario(" . $row["id"] . ")'>Actualizar</button></td>";
+                                                    // echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
+                                                    //echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(" . $row["id"] . ")'>Eliminar</button></td>";
                                                 }
                                                 // // echo "<td><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#modalSalida' data-id='" . $row["id"] . "'>X</button></td>";
                                                 //echo "<td><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#modalSalida' data-id='" . $row["id"] . "' data-placa='" . $row["placa"] . "' data-hora-ingreso='" . $row["hora_ingreso"] . "' data-tipo-parqueo='" . $row["tipo_parqueo"] . "'>X</button></td>";
@@ -206,27 +222,64 @@ if (isset($_SESSION['correo'])) {
                     ?>
                 </div>
             </main>
+
+            <div class="modal fade" id="formularioModal" tabindex="-1" role="dialog" aria-labelledby="formularioModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formularioModalLabel">Actualizar Tarifa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="actualizarTarifaForm">
+                    <input type="hidden" id="tarifaId" name="tarifaId">
+                    <div class="form-group">
+                        <label for="nuevoNombreTarifa">Nuevo Nombre Tarifa:</label>
+                        <input type="text" class="form-control" id="nuevoNombreTarifa" name="nuevoNombreTarifa" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nuevoValorTarifa">Nuevo Valor Tarifa:</label>
+                        <input type="number" class="form-control" id="nuevoValorTarifa" name="nuevoValorTarifa" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="guardarActualizacion()">Guardar Actualización</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
         </div>
     </div>
+</div>
+        </div>
+    </div>
+
+
+
+
     <!-- <script src="script.js"></script> -->
     <!-- Agrega los enlaces a Bootstrap JS y jQuery (debes incluir jQuery antes de Bootstrap JS) -->
 
 
 
     <script>
-        function actualizarCosto(id) {
-            var nuevoCosto = document.getElementById("costoInput_" + id).value;
+        function guardarActualizacion(id) {
+            var tarifaId = document.getElementById("tarifaId").value;
+            var nuevoNombre = document.getElementById("nuevoNombreTarifa").value;
+            var nuevoCosto = document.getElementById("nuevoValorTarifa").value;
 
             $.ajax({
                 type: "POST",
                 url: "../controllers/actualizar_tarifa.php",
                 data: {
-                    id: id,
-                    nuevoCosto: nuevoCosto
+                    id: tarifaId,
+                    nuevoCosto: nuevoCosto,
+                    nuevoNombre: nuevoNombre
                 },
                 success: function(response) {
                     alert(response);
+                    $('#formularioModal').modal('hide');
                     // Puedes recargar la página o actualizar solo la fila de la tabla con JavaScript.
+                    location.reload();
                 },
                 error: function(error) {
                     console.error("Error al actualizar el costo: " + error.responseText);
@@ -252,6 +305,20 @@ if (isset($_SESSION['correo'])) {
                 });
             }
         }
+
+
+        function abrirFormulario(id) {
+        // Obtener el valor actual del nombre y la tarifa y establecerlos en los campos correspondientes
+     
+        var nombreActual = document.getElementById("nombreInput_" + id).value;
+        var valorActual = document.getElementById("costoInput_" + id).value;
+
+        document.getElementById("nuevoNombreTarifa").value = nombreActual;
+        document.getElementById("nuevoValorTarifa").value = valorActual;
+
+        // Establecer el ID de la tarifa en el formulario
+        document.getElementById("tarifaId").value = id;
+    }
     </script>
 
 

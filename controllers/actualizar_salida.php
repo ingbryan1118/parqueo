@@ -1,10 +1,11 @@
-<?php
+<!-- <?php
 // Archivo "actualizar_salida.php"
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recibe los datos del formulario
     $registroId = $_POST["registroId"];
     $horaSalida = $_POST["horaSalida"];
-    $horaIngreso = $_POST["horaIngreso"]; // Asegúrate de recibir la hora de entrada desde tu formulario
+    $horaIngreso = $_POST["horaIngreso"];
+    $costoo = $_POST["costoTotal"];
 
     // Convierte las horas de entrada y salida en objetos DateTime
     $fechaIngreso = new DateTime($horaIngreso);
@@ -14,15 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $diferencia = $fechaIngreso->diff($fechaSalida);
     $minutosTranscurridos = $diferencia->days * 24 * 60 + $diferencia->h * 60 + $diferencia->i;
 
-    // Define las tarifas por tipo de parqueo
-    $tarifas = [
-        1 => 3000,   // Tipo 1: $3000 por hora
-        2 => 1000,   // Tipo 2: Tarifa fija de $5000
-        3 => 5000,   // Tipo 3: Tarifa fija de $8000
-        4 => 8000, // Tipo 4: Tarifa fija de $150000
-    ];
-
-    // Realiza la consulta para obtener el tipo de parqueo asociado al registroId
+    // Realiza la conexión a la base de datos
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -34,49 +27,83 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    // Consulta el tipo de parqueo asociado al registroId
+    // Consulta el tipo de parqueo y la tarifa asociada al registroId
     $consultaTipoParqueo = "SELECT tipo_parqueo FROM parqueo WHERE id = $registroId";
-    $result = $conn->query($consultaTipoParqueo);
+    $resultTipoParqueo = $conn->query($consultaTipoParqueo);
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $tipoParqueo = $row["tipo_parqueo"];
+    if ($resultTipoParqueo->num_rows > 0) {
+        $rowTipoParqueo = $resultTipoParqueo->fetch_assoc();
+        $tipoParqueo = $rowTipoParqueo["tipo_parqueo"];
 
-        // Calcula el costo basado en el tipo de parqueo
-        $costo = 0;
+        // Consulta la tarifa asociada al tipo de parqueo en la tabla "tarifas"
+        $consultaTarifa = "SELECT valorTarifa FROM tarifas WHERE id = $tipoParqueo";
+        $resultTarifa = $conn->query($consultaTarifa);
 
-        if ($tipoParqueo == 1) {
-            if ($minutosTranscurridos <= 19) {
-                $costo = $tarifas[$tipoParqueo] + 1900; // 19 minutos o menos
+        if ($resultTarifa->num_rows > 0) {
+            $rowTarifa = $resultTarifa->fetch_assoc();
+            $tarifa = $rowTarifa["valorTarifa"];
+
+            // Calcula el costo basado en la tarifa y el tiempo transcurrido
+            $costo = 0;
+           
+           
+            if ($tipoParqueo == 12 && $tarifa == 3000) {
+                $costo = $tarifa;
+            } elseif ($tarifa == 5000) {
+                $costo = $tarifa;
+            } elseif ($tarifa == 8000) {
+                $costo = $tarifa;
+            } elseif ($minutosTranscurridos <= 70) {
+                // Si el tiempo es menor o igual a 70 minutos (1 hora y 10 minutos), cobra una hora
+                $costo = $tarifa;
             } else {
-                $horasCompletas = ceil($minutosTranscurridos / 60) - 1; // Resta una hora para no contar la primera hora completa
-                $costo = ($horasCompletas * $tarifas[$tipoParqueo]) + $tarifas[$tipoParqueo];
-            }
-        } else if ($tipoParqueo == 2)  {
-                    if ($minutosTranscurridos <= 19) {
-                        $costo = $tarifas[$tipoParqueo] + 1900; // 19 minutos o menos
+                // Si ha pasado más de 70 minutos, calcula las horas completas
+                $horasCompletas = floor($minutosTranscurridos / 60);
+            
+                // Calcula el costo de la primera hora
+                $costo = $tarifa;
+            
+                // A partir de la segunda hora, cobra la tarifa correspondiente
+                for ($i = 2; $i <= $horasCompletas; $i++) {
+                    if ($i <= 9) {
+                        // Si es la hora 2 a la hora 9, cobra la tarifa normal
+                        $costo += $tarifa;
                     } else {
-                        $horasCompletas = ceil($minutosTranscurridos / 60) - 1; // Resta una hora para no contar la primera hora completa
-                        $costo = ($horasCompletas * $tarifas[$tipoParqueo]) + $tarifas[$tipoParqueo];
+                        // A partir de la hora 10, cobra el doble de la tarifa
+            
+                        // Verifica si ha pasado más de 10 minutos en la fracción de la hora actual
+                        $minutosFraccion = $minutosTranscurridos % 60;
+                        $minutosFraccion += ($i - 1) * 60;
+                        if ($minutosFraccion > 10) {
+                            $costo += $tarifa * 2;
+                        } else {
+                            $costo += $tarifa;
+                        }
                     }
-         }else {
-            // Tipo de parqueo  3 o 4: Tarifa fija
-            $costo = $tarifas[$tipoParqueo];
-        }
+                }
+            }
+            
+            
 
-        // Actualiza la hora de salida y el costo en la base de datos
-        $sql = "UPDATE parqueo SET hora_salida = '$horaSalida', costo = $costo, estado = 1 WHERE id = $registroId";
+            // Actualiza la hora de salida y el costo en la base de datos
+            $sql = "UPDATE parqueo SET hora_salida = '$horaSalida', costo = $costo, estado = 1, fecha_salida = NOW()   WHERE id = $registroId";
 
-        if ($conn->query($sql) === TRUE) {
-            // La actualización fue exitosa
-            echo "Actualización exitosa. El costo total es de: $" . number_format($costo, 2);
+            if ($conn->query($sql) === TRUE) {
+                // La actualización fue exitosa
+                echo "Actualización exitosa. El costo total es de: $" . number_format($costo, 2);
+            } else {
+                // Hubo un error en la actualización
+                echo "Error en la actualización: " . $conn->error;
+            }
+
         } else {
-            // Hubo un error en la actualización
-            echo "Error en la actualización: " . $conn->error;
+            echo "No se encontró una tarifa asociada al tipo de parqueo.";
         }
+
     } else {
         echo "No se encontró un registro con el ID proporcionado.";
     }
 
     $conn->close();
 }
+?> -->

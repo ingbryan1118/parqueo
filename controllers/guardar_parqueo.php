@@ -1,7 +1,4 @@
 <?php
-// Conexión a la base de datos (ajusta los valores según tu configuración)
-
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -16,39 +13,37 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-$placa = $_POST["placa"];
-$tipoParqueo = $_POST["tipo_parqueo"];
-// $horaIngreso = $_POST["hora_ingreso"];
-$fechaIngreso = date("Y-m-d");
-$horaIngreso = date("H:i:s");
+    $placa = mysqli_real_escape_string($conn, $_POST["placa"]);
+    $fechaIngreso = date("Y-m-d");
+    $horaIngreso = date("H:i:s");
 
-// Validación de formato de hora (HH:MM)
-// if (!preg_match("/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/", $horaIngreso)) {
-//     echo "El formato de hora de ingreso no es válido (HH:MM).";
-//     exit;
-// }
-    
-    // Resto del código para guardar en la base de datos
-    
+    // Verificar si la placa ya existe en la tabla 'placa'
+    $stmt = $conn->prepare("SELECT tipo_parqueo FROM placa WHERE placa = ?");
+    $stmt->bind_param("s", $placa);
+    $stmt->execute();
+    $resultadoPlaca = $stmt->get_result();
 
-// Resto del código para guardar en la base de datos
+    if ($resultadoPlaca !== false && $resultadoPlaca->num_rows > 0) {
+        // La placa ya existe, obtener la tipo de parqueo
+        $tipo_parqueo = $resultadoPlaca->fetch_assoc();
+        $parqueo = $tipo_parqueo['tipo_parqueo'];
 
-
-   
-    // Inserta el registro en la base de datos
-    // $horaIngresoFormateada = $horaIngreso . ":00";
-
-    $sql = "INSERT INTO parqueo (placa, fecha_ingreso, tipo_parqueo, hora_ingreso,estado) VALUES ('$placa', '$fechaIngreso', $tipoParqueo, '$horaIngreso',0)";
-    
-    if ($conn->query($sql) === TRUE) {
-        // echo "Parqueo registrado con éxito.";
-        // echo "<a href='index.php' class='btn btn-primary'>Volver al Formulario</a>";
-        // Redirige nuevamente a formulario_parqueo.php
-        header("Location: ../views/index.php?exito=1");
+        // Insertar en la tabla 'parqueo' con la tarifa obtenida
+        $stmtInsert = $conn->prepare("INSERT INTO parqueo (placa, fecha_ingreso, tipo_parqueo, hora_ingreso, estado) VALUES (?, ?, ?, ?, 0)");
+        $stmtInsert->bind_param("ssss", $placa, $fechaIngreso, $parqueo, $horaIngreso);
+        if ($stmtInsert->execute()) {
+            header("Location: ../views/index.php?exito=1");
+            exit(); // Agrega exit() después de redirigir para detener la ejecución del script.
+        } else {
+            echo "Error al registrar el parqueo: " . $stmtInsert->error;
+        }
     } else {
-        echo "Error al registrar el parqueo: " . $conn->error;
+        header("Location: ../views/index.php?error=1");
+            exit(); // Agrega exit() después de redirigir para detener la ejecución del script.
     }
 
+    $stmt->close();
+    $stmtInsert->close();
     $conn->close();
 }
+?>

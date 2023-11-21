@@ -34,16 +34,35 @@ if (isset($_SESSION['correo'])) {
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
+
+                        <?php
+                        // Lógica condicional para ocultar elementos según el tipo de usuario
+                        if ($tipoUsuario != 2) {
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
+
+                            echo '<li class="nav-item">
+                  <a class="nav-link" href="creaplaca.php">
+                      <i class="fa fa-sign-out"></i> Crear Placa
+                  </a>
+                </li>';
+                        }
+
+                        echo '<li class="nav-item">
+                  <a class="nav-link" href="verplacas.php">
+                      <i class="fa fa-sign-out"></i> Ver Placas
+                  </a>
+                </li>';
+                        ?>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" href="creaVehiculo.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo Mensual
-                            </a>
-                        </li>
+                        
 
 
                         <li class="nav-item">
@@ -111,7 +130,7 @@ if (isset($_SESSION['correo'])) {
                     <div class="row">
 
                         <div class="col-md-4">
-
+                        <h3 class="text-center">Reportes con placas</h3>
                             <form id="fechaForm" method="POST" action="../controllers/generar_informe.php">
                                 <div class="form-group">
                                     <label for="fecha">Selecciona una fecha:</label>
@@ -124,28 +143,14 @@ if (isset($_SESSION['correo'])) {
 
                         </div>
                         <div class="col-md-4">
-                            <!-- <form id="fechaForm" method="POST" action="generar_informe.php">
-                            <div class="form-group">
-                                <label for="fecha">Selecciona un mes:</label>
-                                <select name="month">
-                                    <option value="all">Todos los meses</option>
-                                    <option value="1">Enero</option>
-                                    <option value="2">Febrero</option>
-                                    <option value="3">Marzo</option>
-                                    <option value="4">Abril</option>
-                                    <option value="5">Mayo</option>
-                                    <option value="6">Junio</option>
-                                    <option value="7">Julio</option>
-                                    <option value="8">Agosto</option>
-                                    <option value="9">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
-                                   Add options for all 12 months 
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Generar Informe Mensual</button>
-                        </form> -->
+                        <h3 class="text-center">Reporte caja</h3>
+                        <form id="fechaForm" method="POST" action="../controllers/generar_informe.php">
+                                <div class="form-group">
+                                    <label for="fecha">Selecciona una fecha:</label>
+                                    <input type="date" id="fecha" name="fecha">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Generar Informe</button>
+                            </form>
 
                         </div>
 

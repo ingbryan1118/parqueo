@@ -14,13 +14,16 @@ if ($conn->connect_error) {
 if (isset($_POST['id']) && isset($_POST['nuevoCosto'])) {
     $id = $_POST['id'];
     $nuevoCosto = $_POST['nuevoCosto'];
+    $nuevoNombre = $_POST['nuevoNombre'];
+    
 
-    $sql = "UPDATE tarifas SET valorTarifa = $nuevoCosto WHERE id = $id";
+    $sql = "UPDATE tarifas SET valorTarifa = $nuevoCosto, nombreTarifa = '$nuevoNombre' WHERE id = $id";
 
     if ($conn->query($sql) === true) {
-        echo "El costo se ha actualizado correctamente.";
+        echo "Tarifa actualizada correctamente.";
     } else {
         echo "Error al actualizar el costo: " . $conn->error;
+        echo $sql;
     }
 }
 

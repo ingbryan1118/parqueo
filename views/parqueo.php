@@ -31,16 +31,34 @@ if (isset($_SESSION['correo'])) {
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
+
+                        <?php
+                        // Lógica condicional para ocultar elementos según el tipo de usuario
+                        if ($tipoUsuario != 2) {
+                            //             echo '<li class="nav-item">
+                            //     <a class="nav-link" href="reporte.php">
+                            //         <i class="fa fa-sign-out"></i> Reporte
+                            //     </a>
+                            //   </li>';
+
+                            echo '<li class="nav-item">
+                  <a class="nav-link" href="creaplaca.php">
+                      <i class="fa fa-sign-out"></i> Crear Placa
+                  </a>
+                </li>';
+
+                echo '<li class="nav-item">
+                  <a class="nav-link" href="verplacas.php">
+                      <i class="fa fa-sign-out"></i> Ver Placas
+                  </a>
+                </li>';
+                        }
+                        ?>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" href="creaVehiculo.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo Mensual
-                            </a>
-                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="parqueo.php">
@@ -192,9 +210,6 @@ if (isset($_SESSION['correo'])) {
                                     <!-- Agrega estos elementos <span> para mostrar la placa y la hora de ingreso -->
                                     <p>Placa: <span id="placaSalida"></span></p>
                                     <p>Hora de Ingreso: <span id="horaIngresoSalida"></span></p>
-
-                                    <label for="horaSalida">Hora de Salida:</label>
-                                    <input type="time" class="form-control" id="horaSalida" name="horaSalida" required>
                                     <input type="hidden" id="registroId" name="registroId">
                                     <input type="hidden" id="costoTotal" name="costoTotal"> <!-- Campo oculto para el costo -->
                                     <input type="hidden" id="tipo_parqueo" name="tipo_parqueo"> <!-- Campo oculto para el costo -->
@@ -264,22 +279,35 @@ if (isset($_SESSION['correo'])) {
             document.getElementById("tipo_parqueo").value = tipo_parqueo;
             //console.log("actualizar salida" + costoTotal)
 
-            // Limpiar el campo de hora de salida
-            document.getElementById("horaSalida").value = "";
+            
 
         });
 
         // Manejar el envío del formulario
         $('#formSalida').submit(function(e) {
             e.preventDefault();
+            var fechaActual = new Date();
+        // Obtener la hora actual, minutos y segundos
+            var hora = fechaActual.getHours();
+            var minutos = fechaActual.getMinutes();
+            var segundos = fechaActual.getSeconds();
+
+        // Formatear la hora, minutos y segundos para que tengan dos dígitos
+            hora = hora < 10 ? "0" + hora : hora;
+            minutos = minutos < 10 ? "0" + minutos : minutos;
+            segundos = segundos < 10 ? "0" + segundos : segundos;
+
+        // Crear una cadena con el formato deseado (por ejemplo, "12:13:42")
+            var horaActualString = hora + ":" + minutos + ":" + segundos;    
             var registroId = document.getElementById("registroId").value;
-            var horaSalida = document.getElementById("horaSalida").value;
+            var horaSalida = horaActualString;
             var costoTotal = document.getElementById("costoTotal").value; // Obtener el costo del campo oculto
 
             var tipo_parqueo = document.getElementById("tipo_parqueo").value;
             console.log("form salida");
             console.log("costo total " + costoTotal);
             console.log("Tipo de parqueo" + tipo_parqueo);
+            console.log("horaSalida" + horaSalida);
 
             // Obtener la placa y la hora de ingreso de la fila correspondiente
             var placa = document.getElementById("placaSalida").textContent;
@@ -315,95 +343,128 @@ if (isset($_SESSION['correo'])) {
             $('#modalSalida').modal('hide');
         });
 
-
         function generarTicket(placa, horaIngreso, horaSalida, tipo_parqueo) {
-            // El contenido de la función generarTicket aquí...
-            var horaIngresoObj = new Date("1970-01-01T" + horaIngreso + "Z");
-            var horaSalidaObj = new Date("1970-01-01T" + horaSalida + "Z");
-            var diferencia = horaSalidaObj - horaIngresoObj;
-            var minutos = Math.round(diferencia / 60000);
+            var costoTotal;
+            // Realizar la consulta a la base de datos para obtener la tarifa
+    var urlConsulta = "../controllers/obtener_tarifas.php?tipo_parqueo=" + tipo_parqueo;
+    console.log("urlConsulta: "+ urlConsulta)
+    // Utiliza una función para manejar la respuesta de la consulta a la base de datos
+    function handleConsultaResponse(response) {
+    console.log("Respuesta de la consulta:", response + tipo_parqueo);
 
+    try {
+        // Intentar analizar la respuesta como JSON
+        var parsedResponse = JSON.parse(response);
 
-
-            console.log("TIPO DE PARQUEO:" + tipo_parqueo);
-            if (tipo_parqueo == 1) {
-                var tarifaPorHora = 3000;
-                console.log("TARIFA POR HORA:" + tarifaPorHora);
-                var horasCompletas = Math.floor(minutos / 60);
-                var costoHorasCompletas = horasCompletas * tarifaPorHora;
-                var costoMinutosAdicionales = 0;
-
-                if (minutos % 60 > 19) {
-                    costoMinutosAdicionales = tarifaPorHora;
-                }
-
-                costoTotal = costoHorasCompletas + costoMinutosAdicionales;
-            } else if (tipo_parqueo == 2) {
-                var tarifaPorHora = 1000;
-                console.log("TARIFA POR HORA:" + tarifaPorHora);
-                var horasCompletas = Math.floor(minutos / 60);
-                var costoHorasCompletas = horasCompletas * tarifaPorHora;
-                var costoMinutosAdicionales = 0;
-
-                if (minutos % 60 > 19) {
-                    costoMinutosAdicionales = tarifaPorHora;
-                }
-
-                costoTotal = costoHorasCompletas + costoMinutosAdicionales;
-            } else if (tipo_parqueo == 3) {
-                costoTotal = 5000;
-            } else if (tipo_parqueo == 4) {
-                costoTotal = 8000;
-            }
-
-
-
-
-
-
-
-            var ticketContent = `
-                    <html>
-                    <head>
-                        <title>Ticket de Salida</title>
-                        <style>
-                            /* Estilos CSS para el ticket */
-                            body {
-                                font-family: Arial, sans-serif;
-                            }
-                            .ticket {
-                                width: 300px;
-                                padding: 10px;
-                                border: 1px solid #000;
-                            }
-                            .info {
-                                margin-bottom: 10px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="ticket">
-                            <h2>Centro Comercial de la 34</h2>
-                            <h4>Ticket de Parqueo</h4>
-                            <div class="info">
-                                <p><strong>Placa:</strong> ${placa}</p>
-                                <p><strong>Hora de Ingreso:</strong> ${horaIngreso}</p>
-                                <p><strong>Hora de Salida:</strong> ${horaSalida}</p>
-                                <p><strong>Costo:</strong> ${costoTotal} pesos</p>
-                            </div>
-                        </div>
-                    </body>
-                    </html>
-                `;
-
-            var url = "../controllers/actualizar_salida.php?placa=" + encodeURIComponent(placa) + "&costo=" + costoTotal;
-            var ticketWindow = window.open(url, "_blank", "width=400,height=400");
-            ticketWindow.document.open();
-            ticketWindow.document.write(ticketContent);
-            ticketWindow.document.close();
-            ticketWindow.focus();
-            ticketWindow.print();
+        // Verificar si el valor parseado es un número
+        if (!isNaN(parsedResponse)) {
+            calcularCostoTotal(parsedResponse, tipo_parqueo);
+        } else {
+            console.error("El valor parseado no es un número válido.");
         }
+    } catch (error) {
+        console.error("Error al analizar la respuesta como JSON:", error);
+    }
+}
+
+
+    // Hacer la solicitud AJAX para obtener la tarifa
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", urlConsulta, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log("Respuesta del servidor:", xhr.responseText);
+            handleConsultaResponse(xhr.responseText);
+        }
+    };
+    xhr.send();
+
+
+    
+    // Función para calcular el costo total con la tarifa obtenida
+    function calcularCostoTotal(valorTarifa, tipo_parqueo) {
+        // Resto del código para calcular el costo total
+        var horaIngresoObj = new Date("1970-01-01T" + horaIngreso + "Z");
+        var horaSalidaObj = new Date("1970-01-01T" + horaSalida + "Z");
+        var diferencia = horaSalidaObj - horaIngresoObj;
+        var minutos = Math.round(diferencia / 60000);
+
+        var horasCompletas = Math.floor(minutos / 60);
+        var costoHorasCompletas = horasCompletas * valorTarifa;
+        var costoMinutosAdicionales = 0;
+
+
+
+       var costoTotal;
+       console.log("tipo de parqueo"+ tipo_parqueo)
+if (tipo_parqueo == 12 && valorTarifa === 3000) {
+        costoTotal = valorTarifa;
+
+} else if (valorTarifa === 5000) {
+        costoTotal = valorTarifa;
+
+} else if (valorTarifa === 8000) {
+        costoTotal = valorTarifa;
+
+} else {
+        // Si el vehículo estuvo estacionado una hora o más,
+        // se aplica la lógica original de cálculo del costo
+        var horasCompletas = Math.floor(minutos / 60);
+        var costoHorasCompletas = horasCompletas * valorTarifa;
+        var costoMinutosAdicionales = 0;
+
+        if (minutos % 60 > 10) {
+            costoMinutosAdicionales = valorTarifa;
+        }
+
+        costoTotal = costoHorasCompletas + costoMinutosAdicionales;
+    }
+        // Generar el contenido del ticket
+        var ticketContent = `
+            <html>
+            <head>
+                <title>Ticket de Salida</title>
+                <style>
+                    /* Estilos CSS para el ticket */
+                    body {
+                        font-family: Arial, sans-serif;
+                    }
+                    .ticket {
+                        width: 300px;
+                        padding: 10px;
+                        border: 1px solid #000;
+                    }
+                    .info {
+                        margin-bottom: 10px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="ticket">
+                    <h2>Centro Comercial de la 34</h2>
+                    <h4>Ticket de Parqueo</h4>
+                    <div class="info">
+                        <p><strong>Placa:</strong> ${placa}</p>
+                        <p><strong>Hora de Ingreso:</strong> ${horaIngreso}</p>
+                        <p><strong>Hora de Salida:</strong> ${horaSalida}</p>
+                        <p><strong>Costo:</strong> ${costoTotal} pesos</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        // Abrir una nueva ventana para mostrar el ticket y realizar la impresión
+        var url = "../controllers/actualizar_salida.php?placa=" + encodeURIComponent(placa) + "&costo=" + costoTotal;
+        var ticketWindow = window.open(url, "_blank", "width=400,height=400");
+        ticketWindow.document.open();
+        ticketWindow.document.write(ticketContent);
+        ticketWindow.document.close();
+        ticketWindow.focus();
+        ticketWindow.print();
+    }
+}
+      
     </script>
 </body>
 
