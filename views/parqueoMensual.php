@@ -138,10 +138,12 @@ if (isset($_SESSION['correo'])) {
                             <thead>
                                 <tr>
                                     <th>Placa del Vehículo</th>
-                                    <th>Fecha</th>
-                                    <th>Hora de Ingreso</th>
+                                    <th>Tarifa</th>
+                                    <!-- <th>Actualizar</th>
+                                    <th>Eliminar</th> -->
+                                    <!-- <th>Hora de Ingreso</th>
                                     <th>Entrada</th>
-                                    <th>costo</th>
+                                    <th>costo</th> -->
 
 
                                 </tr>
@@ -160,20 +162,10 @@ if (isset($_SESSION['correo'])) {
                                     die("Error de conexión: " . $conn->connect_error);
                                 }
 
-                                // Consulta SQL para obtener los vehículos en el parqueadero
-                                // $sql = "SELECT id, placa, fecha_ingreso, hora_ingreso, tipo_parqueo, costo
-                                // FROM parqueo
-                                // WHERE estado = 2 
-                                //   AND fecha_salida IS NULL
-                                //   AND MONTH(fecha_ingreso) = MONTH(CURRENT_DATE())
-                                //   AND YEAR(fecha_ingreso) = YEAR(CURRENT_DATE());";
-
-                                $sql = "SELECT id, placa, fecha_ingreso, hora_ingreso, tipo_parqueo,costo 
-                                    FROM parqueo 
-                                    WHERE estado = 2 
-                                    AND fecha_salida IS NULL
-                                    AND YEAR(fecha_ingreso) = YEAR(CURRENT_DATE())
-                                    AND MONTH(fecha_ingreso) = MONTH(CURRENT_DATE())";
+                                $sql = "SELECT p.id, p.placa, p.tipo_parqueo, t.id, t.nombreTarifa, t.valorTarifa
+                                FROM placa AS p
+                                JOIN tarifas AS t ON p.tipo_parqueo = t.id
+                                WHERE tipo_parqueo in (6,8,9,10)";
 
                                 // Si se proporcionó una placa para buscar, agregar la cláusula WHERE
                                 if (isset($_GET['placa']) && !empty($_GET['placa'])) {
@@ -185,28 +177,20 @@ if (isset($_SESSION['correo'])) {
 
 
 
-                                // Si se proporcionó una placa para buscar, agregar la cláusula WHERE
-                                if (isset($_GET['placa']) && !empty($_GET['placa'])) {
-                                    $placaBuscada = $_GET['placa'];
-                                    $sql .= " AND placa LIKE '%$placaBuscada%'";
-                                }
-
-                                $result = $conn->query($sql);
 
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
                                         echo "<td>" . $row["placa"] . "</td>";
-                                        $fechaFormateada = date("Y-m-d", strtotime($row["fecha_ingreso"]));
-                                        echo "<td>" . $fechaFormateada . "</td>";
-                                        echo "<td id='horaIngreso'>" . $row["hora_ingreso"] . "</td>";
-                                        echo "<td><button class='btn btn-success btn-sm' onclick='abrirTicket(\"" . $row["placa"] . "\", \"" . $row["hora_ingreso"] . "\", \"" . $row["tipo_parqueo"] . "\")'>ticket</button></td>";
+                                        echo "<td>" . $row["nombreTarifa"] . "</td>";
+                                        echo "<td><button class='btn btn-success btn-sm' onclick='abrirTicket(\"" . $row["placa"] . "\", \"" . $row["tipo_parqueo"] . "\")'>ticket</button></td>";
                                         //echo "<td id='horaIngreso'>" . $row["costo"] . "</td>";
-                                        echo "<td><input type='number' class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["costo"] . "'></td>";
+                                       // echo "<td><input type='number' class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["costo"] . "'></td>";
                                         if ($tipoUsuario != 2) {
+                                            //echo "<td><button class='btn btn-success btn-sm' onclick='abrirTicket(\"" . $row["placa"] . "\", \"" . $row["hora_ingreso"] . "\", \"" . $row["tipo_parqueo"] . "\")'>ticket</button></td>";
+                                            //echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
+                                            echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(\"" . $row["placa"] . "\")'>Eliminar</button></td>";
 
-                                            echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
-                                            echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(" . $row["id"] . ")'>Eliminar</button></td>";
                                         }
                                         // // echo "<td><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#modalSalida' data-id='" . $row["id"] . "'>X</button></td>";
                                         //echo "<td><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#modalSalida' data-id='" . $row["id"] . "' data-placa='" . $row["placa"] . "' data-hora-ingreso='" . $row["hora_ingreso"] . "' data-tipo-parqueo='" . $row["tipo_parqueo"] . "'>X</button></td>";
@@ -452,13 +436,15 @@ if (isset($_SESSION['correo'])) {
         }
 
 
-        function eliminarRegistro(registroId) {
+        function eliminarRegistro(placa) {
+            
+            //console.log("id a eliminar: " + placa)
             if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
                 $.ajax({
                     type: "POST",
                     url: "../controllers/eliminar_registro.php",
                     data: {
-                        id: registroId
+                        placa: placa
                     },
                     success: function(response) {
                         alert(response);

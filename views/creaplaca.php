@@ -186,7 +186,17 @@ if (isset($_SESSION['correo'])) {
                     if (isset($_GET["exito"]) && $_GET["exito"] == 1) {
 
                         echo '<div class="alert alert-success mt-3 alert-dismissible fade show">
-                Parqueo Exitoso
+                Placa creada con exito
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+                    }
+
+                    if (isset($_GET["exito"]) && $_GET["exito"] == 0) {
+
+                        echo '<div class="alert alert-danger mt-3 alert-dismissible fade show">
+                La placa ya esta creada
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -12,11 +12,12 @@ if ($conn->connect_error) {
 }
 
 // Verifica si se recibió un ID válido para eliminar
-if (isset($_POST['id'])) {
-    $registroId = $_POST['id'];
+if (isset($_POST['placa'])) {
+    $placa = $_POST['placa'];
 
     // Consulta SQL para eliminar el registro
-    $sql = "DELETE FROM parqueo WHERE id = $registroId";
+    $sql = "DELETE FROM placa WHERE placa = '$placa'";
+    echo $sql;
 
     if ($conn->query($sql) === TRUE) {
         echo "Registro eliminado con éxito.";

@@ -394,16 +394,13 @@ if (isset($_SESSION['correo'])) {
         var costoMinutosAdicionales = 0;
 
 
+/* Codigo para colocar las tarifas y sus valores
+        
 
+* */
        var costoTotal;
-       console.log("tipo de parqueo"+ tipo_parqueo)
-if (tipo_parqueo == 12 && valorTarifa === 3000) {
-        costoTotal = valorTarifa;
-
-} else if (valorTarifa === 5000) {
-        costoTotal = valorTarifa;
-
-} else if (valorTarifa === 8000) {
+       console.log("tipo de parqueo" + tipo_parqueo)
+if (tipo_parqueo >= 3 && tipo_parqueo <= 10) {
         costoTotal = valorTarifa;
 
 } else {

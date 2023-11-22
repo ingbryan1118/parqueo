@@ -1,7 +1,4 @@
 <?php
-// Conexión a la base de datos (ajusta los valores según tu configuración)
-
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -16,21 +13,29 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-$placa = $_POST["placa"];
-$tipoParqueo = $_POST["tipo_parqueo"];
+    $placa = $_POST["placa"];
+    $tipoParqueo = $_POST["tipo_parqueo"];
+    $fechaIngreso = date('Y-m-d H:i:s');
 
+    $sqlVerificarPlaca = "SELECT * FROM placa WHERE placa = '$placa'";
+    $resultadoVerificacion = $conn->query($sqlVerificarPlaca);
 
-    $sql = "INSERT INTO placa (placa, tipo_parqueo) VALUES ('$placa', $tipoParqueo)";
-    
-    if ($conn->query($sql) === TRUE) {
-        // echo "Parqueo registrado con éxito.";
-        // echo "<a href='index.php' class='btn btn-primary'>Volver al Formulario</a>";
-        // Redirige nuevamente a formulario_parqueo.php
-        header("Location: ../views/creaplaca.php?exito=1");
+    if ($resultadoVerificacion->num_rows > 0) {
+        // La placa ya existe, mostrar mensaje al usuario
+        header("Location: ../views/creaplaca.php?exito=0");
+        exit(); // Detener la ejecución del script
     } else {
-        echo "Error al registrar el parqueo: " . $conn->error;
+        // La placa no existe, realizar la inserción en la base de datos
+        $sql = "INSERT INTO placa (placa, tipo_parqueo, fecha_ingreso) VALUES ('$placa', $tipoParqueo, '$fechaIngreso')";
+        if ($conn->query($sql) === TRUE) {
+            // Redirigir al usuario con un mensaje de éxito
+            header("Location: ../views/creaplaca.php?exito=1");
+            exit(); // Detener la ejecución del script
+        } else {
+            echo "Error al ejecutar la inserción: " . $conn->error;
+        }
     }
 
     $conn->close();
 }
+?>

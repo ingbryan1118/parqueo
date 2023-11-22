@@ -182,6 +182,8 @@ if (isset($_SESSION['correo'])) {
 
                                         if ($tipoUsuario != 2) {
 
+                                            echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(\"" . $row["placa"] . "\")'>Eliminar</button></td>";
+
                                             // echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
                                             // echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(" . $row["id"] . ")'>Eliminar</button></td>";
                                         }
@@ -239,13 +241,15 @@ if (isset($_SESSION['correo'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
     <script>
-        function eliminarRegistro(registroId) {
+        function eliminarRegistro(placa) {
+            
+            //console.log("id a eliminar: " + placa)
             if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
                 $.ajax({
                     type: "POST",
                     url: "../controllers/eliminar_registro.php",
                     data: {
-                        id: registroId
+                        placa: placa
                     },
                     success: function(response) {
                         alert(response);

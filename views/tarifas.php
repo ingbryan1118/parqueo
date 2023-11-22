@@ -126,10 +126,11 @@ if (isset($_SESSION['correo'])) {
 
 
                     <div class="row">
+                        <!--
                         <div class="col-md-4 ">
                             <h2 class="text-center">Registro de Tarifas</h2>
                             <form method="POST" action="../controllers/guardar_tarifa.php">
-                                <!-- <form id="parqueoForm"> -->
+                                 <form id="parqueoForm"> 
                                 <div class="form-group">
                                     <label for="nombreTarifa">Nombre Tarifa:</label>
                                     <input type="text" class="form-control" id="nombreTarifa" name="nombreTarifa" required>
@@ -143,10 +144,13 @@ if (isset($_SESSION['correo'])) {
                                     <input type="time" class="form-control" id="hora_ingreso" name="hora_ingreso" required>
                                     <input type="text" class="form-control" id="hora_ingreso" name="hora_ingreso" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Ingrese la hora en formato HH:MM" required>
                                 </div> -->
-                                <button type="submit" class="btn btn-primary">Registrar Tarifa</button>
+
+                                <!-- <button type="submit" class="btn btn-primary">Registrar Tarifa</button> -->
                                 <!-- <button type="button" id="registrarParqueo">Registrar Parqueo</button> -->
+                            <!--
                             </form>
                         </div>
+                    -->
 
                         <div class="col-md-8 ">
                             <h2 class="text-center">Listado de Tarifas</h2>

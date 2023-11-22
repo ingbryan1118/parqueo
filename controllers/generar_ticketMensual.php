@@ -17,7 +17,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    $sql = "SELECT * FROM parqueo WHERE placa = '$placaBuscada' AND fecha_salida IS NULL";
+    $sql = "SELECT * FROM placa WHERE placa = '$placaBuscada'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -25,7 +25,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
         $row = $result->fetch_assoc();
         $placa = $row["placa"];
         $fechaIngreso = date("Y-m-d", strtotime($row["fecha_ingreso"]));
-        $horaIngreso = $row["hora_ingreso"];
+        //$horaIngreso = $row["hora_ingreso"];
 
         // Cierra la conexión a la base de datos
         $conn->close();
@@ -54,8 +54,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
                 <h4>Ticket de Parqueo</h4>
                 <p><strong>Placa:</strong> $placa</p>
                 <p><strong>Fecha de Ingreso:</strong> $fechaIngreso</p>
-                <p><strong>Hora de Ingreso:</strong> $horaIngreso</p>
-                <!-- Agrega otros detalles del ticket aquí -->
+                 <!-- Agrega otros detalles del ticket aquí -->
             </div>
             <script>
                 // Función para imprimir el ticket al cargar la página

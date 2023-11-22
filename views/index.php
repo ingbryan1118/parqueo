@@ -61,14 +61,13 @@ if (isset($_SESSION['correo'])) {
                 </li>';
 
 
-                echo '<li class="nav-item">
+                            echo '<li class="nav-item">
                   <a class="nav-link" href="verplacas.php">
                       <i class="fa fa-sign-out"></i> Ver Placas
                   </a>
                 </li>';
-                        
                         }
-                
+
                         ?>
 
 
@@ -198,7 +197,7 @@ if (isset($_SESSION['correo'])) {
                     if (isset($_GET["error"]) && $_GET["error"] == 1) {
 
                         echo '<div class="alert alert-danger mt-3 alert-dismissible fade show">
-                No esta la placa en la base de datos
+                No esta creada la placa por favor agregarla  
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
