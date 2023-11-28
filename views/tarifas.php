@@ -139,7 +139,7 @@ if (isset($_SESSION['correo'])) {
                                     <label for="valorTarifa">Valor Tarifa:</label>
                                     <input type="number" class="form-control" id="valorTarifa" name="valorTarifa" required>
                                 </div>
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <label for="hora_ingreso">Hora de Ingreso (HH:MM):</label>
                                     <input type="time" class="form-control" id="hora_ingreso" name="hora_ingreso" required>
                                     <input type="text" class="form-control" id="hora_ingreso" name="hora_ingreso" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Ingrese la hora en formato HH:MM" required>
@@ -178,7 +178,7 @@ if (isset($_SESSION['correo'])) {
                                         }
 
                                         $sql = "SELECT id, nombreTarifa, valorTarifa 
-                                        FROM tarifas ";
+                                        FROM tarifas order by id";
                                         $result = $conn->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {

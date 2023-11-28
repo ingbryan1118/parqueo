@@ -144,12 +144,12 @@ if (isset($_SESSION['correo'])) {
                         </div>
                         <div class="col-md-4">
                         <h3 class="text-center">Reporte caja</h3>
-                        <form id="fechaForm" method="POST" action="../controllers/generar_informe.php">
+                        <form id="fechaForm" method="POST" action="../controllers/generarInformeTotal.php">
                                 <div class="form-group">
                                     <label for="fecha">Selecciona una fecha:</label>
                                     <input type="date" id="fecha" name="fecha">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Generar Informe</button>
+                                <button type="submit" class="btn btn-primary">Informe Diario</button>
                             </form>
 
                         </div>

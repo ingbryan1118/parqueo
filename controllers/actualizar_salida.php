@@ -47,11 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $costo = 0;
            
            
-            if ($tipoParqueo == 12 && $tarifa == 3000) {
-                $costo = $tarifa;
-            } elseif ($tarifa == 5000) {
-                $costo = $tarifa;
-            } elseif ($tarifa == 8000) {
+            if ($tipoParqueo >= 3 && $tipoParqueo <= 13) {
                 $costo = $tarifa;
             } elseif ($minutosTranscurridos <= 70) {
                 // Si el tiempo es menor o igual a 70 minutos (1 hora y 10 minutos), cobra una hora

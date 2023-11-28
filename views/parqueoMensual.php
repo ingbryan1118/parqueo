@@ -46,13 +46,13 @@ if (isset($_SESSION['correo'])) {
                       <i class="fa fa-sign-out"></i> Crear Placa
                   </a>
                 </li>';
-
+            }
                 echo '<li class="nav-item">
                   <a class="nav-link" href="verplacas.php">
                       <i class="fa fa-sign-out"></i> Ver Placas
                   </a>
                 </li>';
-                        }
+                      
                         ?>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo

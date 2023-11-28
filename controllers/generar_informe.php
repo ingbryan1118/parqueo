@@ -19,17 +19,13 @@ if (isset($_POST['fecha'])) {
 
     // Consulta para obtener los registros de estacionamiento de la fecha seleccionada
     $sql = "SELECT placa, 
-    CASE tipo_parqueo 
-         WHEN 1 THEN 'DIARIO'  /*DIARIO VEHICULO* */
-         WHEN 2 THEN 'DIARIO'  /*DIARIO MOTO* */
-         WHEN 3 THEN 'DIARIO'  /*5000 VEHICULO* */
-         WHEN 4 THEN 'DIARIO'  /*8000 VEHICULO* */
-         WHEN 5 THEN 'MES' /*MES 160000* */ 
-         WHEN 6 THEN 'MES' /*MES 150000* */ 
-         WHEN 7 THEN 'MES'     /*MES 90000* */   
-         WHEN 8 THEN 'MES'     /*MES 30000* */ 
-         ELSE 'GRATIS' 
-    END AS tipo_parqueo, 
+    CASE 
+         WHEN tipo_parqueo IN (1, 2) THEN 'DIARIO'
+         WHEN tipo_parqueo IN (3, 4, 5, 6, 7) THEN 'FIJO'
+         WHEN tipo_parqueo IN (9, 10, 11, 12) THEN 'MENSUAL'
+         WHEN tipo_parqueo = 13 THEN 'GRATIS'
+         ELSE 'OTRO'  -- Puedes cambiar 'OTRO' por lo que desees para los demás casos
+    END AS tipo_parqueo,
     costo 
 FROM parqueo 
 WHERE fecha_ingreso = '$selectedDate'";

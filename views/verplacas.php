@@ -46,13 +46,14 @@ if (isset($_SESSION['correo'])) {
                       <i class="fa fa-sign-out"></i> Crear Placa
                   </a>
                 </li>';
+                            }
 
                                 echo '<li class="nav-item">
                   <a class="nav-link" href="verplacas.php">
                       <i class="fa fa-sign-out"></i> Ver Placas
                   </a>
                 </li>';
-                            }
+                            
                             ?>
 
 
@@ -96,15 +97,15 @@ if (isset($_SESSION['correo'])) {
                   </a>
                 </li>';
 
+              
+                    
                             echo '<li class="nav-item">
                   <a class="nav-link" href="tarifas.php">
                       <i class="fa fa-sign-out"></i> Tarifas
                   </a>
                 </li>';
-                        }
-
-
-
+            }
+                        
                         ?>
 
                         <li class="nav-item">

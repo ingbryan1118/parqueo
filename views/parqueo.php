@@ -46,13 +46,13 @@ if (isset($_SESSION['correo'])) {
                       <i class="fa fa-sign-out"></i> Crear Placa
                   </a>
                 </li>';
-
+                        }
                 echo '<li class="nav-item">
                   <a class="nav-link" href="verplacas.php">
                       <i class="fa fa-sign-out"></i> Ver Placas
                   </a>
                 </li>';
-                        }
+                      
                         ?>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
@@ -242,7 +242,7 @@ if (isset($_SESSION['correo'])) {
 
             var costoTotal = 0;
 
-            console.log("por aquiiiii ver ticket de entrada" + tipo_parqueo);
+            //console.log("por aquiiiii ver ticket de entrada" + tipo_parqueo);
 
             // Abre la ventana emergente con el contenido del ticket
             var ticketWindow = window.open(url, "_blank", "width=400,height=400");
@@ -266,9 +266,9 @@ if (isset($_SESSION['correo'])) {
             var tipo_parqueo = button.data('tipo-parqueo');
             var costoTotal = 0;
 
-            console.log("generar el de salida")
-            console.log(costoTotal)
-            console.log(tipo_parqueo)
+            //console.log("generar el de salida")
+            //console.log(costoTotal)
+            //console.log(tipo_parqueo)
             // Actualizar los elementos <span> en el modal con la placa y la hora de ingreso
             document.getElementById("placaSalida").textContent = placa;
             document.getElementById("horaIngresoSalida").textContent = horaIngreso;
@@ -304,10 +304,10 @@ if (isset($_SESSION['correo'])) {
             var costoTotal = document.getElementById("costoTotal").value; // Obtener el costo del campo oculto
 
             var tipo_parqueo = document.getElementById("tipo_parqueo").value;
-            console.log("form salida");
-            console.log("costo total " + costoTotal);
-            console.log("Tipo de parqueo" + tipo_parqueo);
-            console.log("horaSalida" + horaSalida);
+            // console.log("form salida");
+            // console.log("costo total " + costoTotal);
+            // console.log("Tipo de parqueo" + tipo_parqueo);
+            // console.log("horaSalida" + horaSalida);
 
             // Obtener la placa y la hora de ingreso de la fila correspondiente
             var placa = document.getElementById("placaSalida").textContent;
@@ -328,14 +328,14 @@ if (isset($_SESSION['correo'])) {
                 }, // Pasar el costo como parámetro
                 success: function(response) {
                     // Actualización exitosa
-                    console.log("Base de datos actualizada correctamente");
+                   // console.log("Base de datos actualizada correctamente");
 
                     // Generar el ticket de salida
                     generarTicket(placa, horaIngreso, horaSalida, tipo_parqueo);
                 },
                 error: function(error) {
                     // Error en la actualización
-                    console.error("Error al actualizar la base de datos: " + error.responseText);
+                   // console.error("Error al actualizar la base de datos: " + error.responseText);
                 }
             });
 
@@ -347,10 +347,10 @@ if (isset($_SESSION['correo'])) {
             var costoTotal;
             // Realizar la consulta a la base de datos para obtener la tarifa
     var urlConsulta = "../controllers/obtener_tarifas.php?tipo_parqueo=" + tipo_parqueo;
-    console.log("urlConsulta: "+ urlConsulta)
+    //console.log("urlConsulta: "+ urlConsulta)
     // Utiliza una función para manejar la respuesta de la consulta a la base de datos
     function handleConsultaResponse(response) {
-    console.log("Respuesta de la consulta:", response + tipo_parqueo);
+    //console.log("Respuesta de la consulta:", response + tipo_parqueo);
 
     try {
         // Intentar analizar la respuesta como JSON
@@ -373,7 +373,7 @@ if (isset($_SESSION['correo'])) {
     xhr.open("GET", urlConsulta, true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log("Respuesta del servidor:", xhr.responseText);
+            //console.log("Respuesta del servidor:", xhr.responseText);
             handleConsultaResponse(xhr.responseText);
         }
     };
@@ -399,11 +399,16 @@ if (isset($_SESSION['correo'])) {
 
 * */
        var costoTotal;
-       console.log("tipo de parqueo" + tipo_parqueo)
-if (tipo_parqueo >= 3 && tipo_parqueo <= 10) {
+       //console.log("tipo de parqueooo para el ticket" + tipo_parqueo)
+if (tipo_parqueo >= 3 && tipo_parqueo <= 13) {
         costoTotal = valorTarifa;
 
 } else {
+    if (minutos <= 70) {
+        // Si el tiempo es menor o igual a 70 minutos, se cobra el valor de la tarifa
+        costoTotal = valorTarifa;
+
+    }else{
         // Si el vehículo estuvo estacionado una hora o más,
         // se aplica la lógica original de cálculo del costo
         var horasCompletas = Math.floor(minutos / 60);
@@ -416,6 +421,7 @@ if (tipo_parqueo >= 3 && tipo_parqueo <= 10) {
 
         costoTotal = costoHorasCompletas + costoMinutosAdicionales;
     }
+}
         // Generar el contenido del ticket
         var ticketContent = `
             <html>
