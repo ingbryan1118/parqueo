@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 // Archivo "actualizar_salida.php"
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recibe los datos del formulario
@@ -102,4 +102,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
-?> -->
+?> 

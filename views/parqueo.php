@@ -41,19 +41,23 @@ if (isset($_SESSION['correo'])) {
                             //     </a>
                             //   </li>';
 
-                            echo '<li class="nav-item">
+                            
+                        }
+                echo '';
+                      
+                        ?>
+
+<li class="nav-item">
                   <a class="nav-link" href="creaplaca.php">
                       <i class="fa fa-sign-out"></i> Crear Placa
                   </a>
-                </li>';
-                        }
-                echo '<li class="nav-item">
+                </li>
+
+                <li class="nav-item">
                   <a class="nav-link" href="verplacas.php">
                       <i class="fa fa-sign-out"></i> Ver Placas
                   </a>
-                </li>';
-                      
-                        ?>
+                </li>
                             <a class="nav-link active" href="index.php">
                                 <i class="fa fa-home"></i> Registrar Parqueo
                             </a>
@@ -314,7 +318,9 @@ if (isset($_SESSION['correo'])) {
             var horaIngreso = document.getElementById("horaIngresoSalida").textContent;
 
             //console.log(horaIngreso);
-            // console.log(horaSalida);
+            //console.log(horaSalida);
+            //console.log(costoTotal);
+
 
             // Actualizar la base de datos con la hora de salida y el tiempo transcurrido
             $.ajax({
