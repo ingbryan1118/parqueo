@@ -308,19 +308,9 @@ if (isset($_SESSION['correo'])) {
             var costoTotal = document.getElementById("costoTotal").value; // Obtener el costo del campo oculto
 
             var tipo_parqueo = document.getElementById("tipo_parqueo").value;
-            // console.log("form salida");
-            // console.log("costo total " + costoTotal);
-            // console.log("Tipo de parqueo" + tipo_parqueo);
-            // console.log("horaSalida" + horaSalida);
-
             // Obtener la placa y la hora de ingreso de la fila correspondiente
             var placa = document.getElementById("placaSalida").textContent;
             var horaIngreso = document.getElementById("horaIngresoSalida").textContent;
-
-            //console.log(horaIngreso);
-            //console.log(horaSalida);
-            //console.log(costoTotal);
-
 
             // Actualizar la base de datos con la hora de salida y el tiempo transcurrido
             $.ajax({

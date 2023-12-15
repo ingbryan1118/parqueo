@@ -55,28 +55,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 // Si ha pasado más de 70 minutos, calcula las horas completas
                 $horasCompletas = floor($minutosTranscurridos / 60);
-            
-                // Calcula el costo de la primera hora
-                $costo = $tarifa;
-            
-                // A partir de la segunda hora, cobra la tarifa correspondiente
-                for ($i = 2; $i <= $horasCompletas; $i++) {
-                    if ($i <= 9) {
-                        // Si es la hora 2 a la hora 9, cobra la tarifa normal
-                        $costo += $tarifa;
-                    } else {
-                        // A partir de la hora 10, cobra el doble de la tarifa
-            
-                        // Verifica si ha pasado más de 10 minutos en la fracción de la hora actual
-                        $minutosFraccion = $minutosTranscurridos % 60;
-                        $minutosFraccion += ($i - 1) * 60;
-                        if ($minutosFraccion > 10) {
-                            $costo += $tarifa * 2;
-                        } else {
-                            $costo += $tarifa;
-                        }
-                    }
+                $costoHorasCompletas = $horasCompletas * $tarifa;
+                // // Calcula el costo de la primera hora
+                // $costo = $tarifa;
+                $costoMinutosAdicionales = 0;
+
+                if ($minutosTranscurridos % 60 > 10) {
+                    $costoMinutosAdicionales = $tarifa;
                 }
+
+                $costo = $costoHorasCompletas + $costoMinutosAdicionales;
+            
+                // // A partir de la segunda hora, cobra la tarifa correspondiente
+                // for ($i = 2; $i <= $horasCompletas; $i++) {
+                //     if ($i <= 9) {
+                //         // Si es la hora 2 a la hora 9, cobra la tarifa normal
+                //         $costo += $tarifa;
+                //     } else {
+                //         // A partir de la hora 10, cobra el doble de la tarifa
+            
+                //         // Verifica si ha pasado más de 10 minutos en la fracción de la hora actual
+                //         $minutosFraccion = $minutosTranscurridos % 60;
+                //         $minutosFraccion += ($i - 1) * 60;
+                //         if ($minutosFraccion > 10) {
+                //             $costo += $tarifa * 2;
+                //         } else {
+                //             $costo += $tarifa;
+                //         }
+                //     }
+                // }
             }
             
             
