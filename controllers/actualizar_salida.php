@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Actualiza la hora de salida y el costo en la base de datos
             $sql = "UPDATE parqueo SET hora_salida = '$horaSalida', costo = $costo, estado = 1, fecha_salida = NOW()   WHERE id = $registroId";
-
+            
             if ($conn->query($sql) === TRUE) {
                 // La actualización fue exitosa
                 echo "Actualización exitosa. El costo total es de: $" . number_format($costo, 2);
