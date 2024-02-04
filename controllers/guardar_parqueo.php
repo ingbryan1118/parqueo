@@ -38,8 +38,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error al registrar el parqueo: " . $stmtInsert->error;
         }
     } else {
-        header("Location: ../views/index.php?error=1");
+
+        $ultimoCaracter = substr($placa, -1);
+
+        if (is_numeric($ultimoCaracter)) {
+            // Placa de tipo vehículo
+            $parqueo = 1;
+        } else {
+            // Placa de tipo moto
+            $parqueo = 2;
+        }
+
+        // Insertar en la tabla 'parqueo' con el tipo de parqueo determinado
+        $stmtInsert = $conn->prepare("INSERT INTO parqueo (placa, fecha_ingreso, tipo_parqueo, hora_ingreso, estado) VALUES (?, ?, ?, ?, 0)");
+        $stmtInsert->bind_param("ssss", $placa, $fechaIngreso, $parqueo, $horaIngreso);
+
+        if ($stmtInsert->execute()) {
+            header("Location: ../views/index.php?exito=1");
             exit(); // Agrega exit() después de redirigir para detener la ejecución del script.
+        } else {
+            echo "Error al registrar el parqueo: " . $stmtInsert->error;
+        }
+        // header("Location: ../views/index.php?error=1");
+        //exit(); // Agrega exit() después de redirigir para detener la ejecución del script.
     }
 
     $stmt->close();

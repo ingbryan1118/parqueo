@@ -80,20 +80,20 @@ if (isset($_SESSION['correo'])) {
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="reporte.php">
                                 <i class="fa fa-sign-out"></i> Reporte
                             </a>
-                        </li>
+                        </li> -->
 
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                            //             echo '<li class="nav-item">
-                            //     <a class="nav-link" href="reporte.php">
-                            //         <i class="fa fa-sign-out"></i> Reporte
-                            //     </a>
-                            //   </li>';
+                                        echo '<li class="nav-item">
+                                <a class="nav-link" href="reporte.php">
+                                    <i class="fa fa-sign-out"></i> Reporte
+                                </a>
+                              </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">

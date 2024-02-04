@@ -76,20 +76,20 @@ if (isset($_SESSION['correo'])) {
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="reporte.php">
                                 <i class="fa fa-sign-out"></i> Reporte
                             </a>
-                        </li>
+                        </li> -->
 
                         <?php
                         // Lógica condicional para ocultar elementos según el tipo de usuario
                         if ($tipoUsuario != 2) {
-                            //             echo '<li class="nav-item">
-                            //     <a class="nav-link" href="reporte.php">
-                            //         <i class="fa fa-sign-out"></i> Reporte
-                            //     </a>
-                            //   </li>';
+                                        echo '<li class="nav-item">
+                                <a class="nav-link" href="reporte.php">
+                                    <i class="fa fa-sign-out"></i> Reporte
+                                </a>
+                              </li>';
 
                             echo '<li class="nav-item">
                   <a class="nav-link" href="creaUsuario.php">
@@ -463,6 +463,24 @@ if (tipo_parqueo >= 3 && tipo_parqueo <= 13) {
         ticketWindow.print();
     }
 }
+
+// function procesarArchivos() {
+//            // Hacer una solicitud AJAX al servidor
+//             var xhr = new XMLHttpRequest();
+//             xhr.open('GET', '../controllers/procesador_imagenes.php', true); // Especifica el endpoint para procesar archivos
+//             xhr.onreadystatechange = function() {
+//                 if (xhr.readyState == 4 && xhr.status == 200) {
+//                     console.log('Archivos procesados correctamente');
+//                 }
+//             };
+//             xhr.send();
+//         }
+
+        
+//         setInterval(procesarArchivos, 5000);
+        
+        //setInterval(procesarArchivos, 180000);
+
       
     </script>
 </body>
