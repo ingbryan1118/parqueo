@@ -27,101 +27,7 @@ if (isset($_SESSION['correo'])) {
     <div class="container-fluid">
         <div class="row">
             <!-- Barra de Navegación Vertical -->
-            <nav id="sidebar" class="col-md-4 col-lg-2 d-md-block bg-light sidebar">
-                <div class="position-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-
-                        <?php
-                        // Lógica condicional para ocultar elementos según el tipo de usuario
-                        if ($tipoUsuario != 2) {
-                            //             echo '<li class="nav-item">
-                            //     <a class="nav-link" href="reporte.php">
-                            //         <i class="fa fa-sign-out"></i> Reporte
-                            //     </a>
-                            //   </li>';
-
-                            echo '';
-            }
-                echo '';
-                      
-                        ?>
-
-<li class="nav-item">
-                  <a class="nav-link" href="creaplaca.php">
-                      <i class="fa fa-sign-out"></i> Crear Placa
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="verplacas.php">
-                      <i class="fa fa-sign-out"></i> Ver Placas
-                  </a>
-                </li>  <li>
-                            <a class="nav-link active" href="index.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo
-                            </a>
-                        </li>
-
-                        
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="parqueo.php">
-                                <i class="fa fa-list"></i> Lista de parqueo
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="parqueoMensual.php">
-                                <i class="fa fa-list"></i> Listado Parqueo Mensual
-                            </a>
-                        </li>
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="reporte.php">
-                                <i class="fa fa-sign-out"></i> Reporte
-                            </a>
-                        </li> -->
-
-                        <?php
-                        // Lógica condicional para ocultar elementos según el tipo de usuario
-                        if ($tipoUsuario != 2) {
-                                        echo '<li class="nav-item">
-                                <a class="nav-link" href="reporte.php">
-                                    <i class="fa fa-sign-out"></i> Reporte
-                                </a>
-                              </li>';
-
-                            echo '<li class="nav-item">
-                  <a class="nav-link" href="creaUsuario.php">
-                      <i class="fa fa-sign-out"></i> Crear Usuario
-                  </a>
-                </li>';
-
-                            echo '<li class="nav-item">
-                  <a class="nav-link" href="tarifas.php">
-                      <i class="fa fa-sign-out"></i> Tarifas
-                  </a>
-                </li>';
-                        }
-
-
-
-                        ?>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php">
-                                <i class="fa fa-sign-out"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
-                                <i class="fa fa-sign-out"></i> Cerrar Sesión
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <?php include('navbar.php'); ?>
 
             <!-- Contenido principal -->
             <main class="col-md-8 ms-sm-auto col-lg-10 px-md-4">
@@ -136,6 +42,7 @@ if (isset($_SESSION['correo'])) {
                         </div>
                         <button type="submit" class="btn btn-primary">Buscar</button>
                     </form>
+                   
 
                     <div class="table-responsive">
                         <table class="table">
@@ -169,7 +76,7 @@ if (isset($_SESSION['correo'])) {
                                 $sql = "SELECT p.id, p.placa, p.tipo_parqueo, t.id, t.nombreTarifa, t.valorTarifa
                                 FROM placa AS p
                                 JOIN tarifas AS t ON p.tipo_parqueo = t.id
-                                WHERE tipo_parqueo in (6,8,9,10)";
+                                WHERE tipo_parqueo in (9,10,11,12)";
 
                                 // Si se proporcionó una placa para buscar, agregar la cláusula WHERE
                                 if (isset($_GET['placa']) && !empty($_GET['placa'])) {
@@ -189,11 +96,14 @@ if (isset($_SESSION['correo'])) {
                                         echo "<td>" . $row["nombreTarifa"] . "</td>";
                                         echo "<td><button class='btn btn-success btn-sm' onclick='abrirTicket(\"" . $row["placa"] . "\", \"" . $row["tipo_parqueo"] . "\")'>ticket</button></td>";
                                         //echo "<td id='horaIngreso'>" . $row["costo"] . "</td>";
-                                       // echo "<td><input type='number' class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["costo"] . "'></td>";
+                                        echo "<td><button class='btn btn-primary btn-guardar-tarifa' data-tarifa='" . $row["valorTarifa"] . "' data-placa='" . $row["placa"] . "'>Pago</button></td>";
+                                         // echo "<td><input type='number' class='form-control' id='costoInput_" . $row["id"] . "' value='" . $row["costo"] . "'></td>";
                                         if ($tipoUsuario != 2) {
                                             //echo "<td><button class='btn btn-success btn-sm' onclick='abrirTicket(\"" . $row["placa"] . "\", \"" . $row["hora_ingreso"] . "\", \"" . $row["tipo_parqueo"] . "\")'>ticket</button></td>";
                                             //echo "<td><button class='btn btn-success btn-sm' onclick='actualizarCosto(" . $row["id"] . ")'>Actualizar</button></td>";
+                                            
                                             echo "<td><button class='btn btn-danger btn-sm' onclick='eliminarRegistro(\"" . $row["placa"] . "\")'>Eliminar</button></td>";
+                                            
 
                                         }
                                         // // echo "<td><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#modalSalida' data-id='" . $row["id"] . "'>X</button></td>";
@@ -451,7 +361,7 @@ if (isset($_SESSION['correo'])) {
                         placa: placa
                     },
                     success: function(response) {
-                        alert(response);
+                        //alert(response);
                         location.reload();
                     },
                     error: function(error) {
@@ -480,6 +390,47 @@ if (isset($_SESSION['correo'])) {
                 }
             });
         }
+
+
+        // Manejar el clic en el botón para guardar la tarifa
+
+        $('.btn-guardar-tarifa').on('click', function() {
+    // Verifica si el botón ya está deshabilitado u oculto para evitar múltiples clics
+    if ($(this).prop('disabled') || $(this).is(':hidden')) {
+        return; // Si ya está deshabilitado u oculto, no hagas nada más
+    }
+
+    var tarifa = $(this).data('tarifa');
+    var placa = $(this).data('placa');
+    var botonPago = $(this); // Guarda una referencia al botón de pago
+
+    // Realizar una solicitud AJAX para guardar la tarifa en la base de datos
+    $.ajax({
+        type: "POST",
+        url: "../controllers/pago_mensualidad.php",
+        data: {
+            tarifa: tarifa,
+            placa: placa
+        },
+        success: function(response) {
+            // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
+            alert(response);
+
+            // Ocultar el botón después de realizar el pago
+            //botonPago.hide();
+            botonPago.css('background-color', '#d4edda');
+        },
+        error: function(error) {
+            // Manejar errores de la solicitud AJAX
+            console.error("Error al guardar la tarifa: " + error.responseText);
+        }
+    });
+});
+
+
+
+
+
     </script>
 </body>
 

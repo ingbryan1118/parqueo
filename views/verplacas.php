@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../style.css">
 </head>
-
+<?php include('../conexion/db_connection.php'); ?>
 <?php
-session_start();
-$tipoUsuario = isset($_SESSION['tipo_usuario']) ? $_SESSION['tipo_usuario'] : null;
+// session_start();
+//$tipoUsuario = isset($_SESSION['tipo_usuario']) ? $_SESSION['tipo_usuario'] : null;
 
 
 if (isset($_SESSION['correo'])) {
@@ -27,104 +27,7 @@ if (isset($_SESSION['correo'])) {
     <div class="container-fluid">
         <div class="row">
             <!-- Barra de Navegación Vertical -->
-            <nav id="sidebar" class="col-md-4 col-lg-2 d-md-block bg-light sidebar">
-                <div class="position-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-
-                            <?php
-                            // Lógica condicional para ocultar elementos según el tipo de usuario
-                            if ($tipoUsuario != 2) {
-                                //             echo '<li class="nav-item">
-                                //     <a class="nav-link" href="reporte.php">
-                                //         <i class="fa fa-sign-out"></i> Reporte
-                                //     </a>
-                                //   </li>';
-
-                                
-                            }
-
-                                echo '';
-                            
-                            ?>
-
-<li class="nav-item">
-                  <a class="nav-link" href="creaplaca.php">
-                      <i class="fa fa-sign-out"></i> Crear Placa
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="verplacas.php">
-                      <i class="fa fa-sign-out"></i> Ver Placas
-                  </a>
-                </li>
-
-
-                            <a class="nav-link active" href="index.php">
-                                <i class="fa fa-home"></i> Registrar Parqueo
-                            </a>
-                        </li>
-
-
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="parqueo.php">
-                                <i class="fa fa-list"></i> Lista de parqueo
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="parqueoMensual.php">
-                                <i class="fa fa-list"></i> Listado Parqueo Mensual
-                            </a>
-                        </li>
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="reporte.php">
-                                <i class="fa fa-sign-out"></i> Reporte
-                            </a>
-                        </li> -->
-
-                        <?php
-                        // Lógica condicional para ocultar elementos según el tipo de usuario
-                        if ($tipoUsuario != 2) {
-                                        echo '<li class="nav-item">
-                                <a class="nav-link" href="reporte.php">
-                                    <i class="fa fa-sign-out"></i> Reporte
-                                </a>
-                              </li>';
-
-                            echo '<li class="nav-item">
-                  <a class="nav-link" href="creaUsuario.php">
-                      <i class="fa fa-sign-out"></i> Crear Usuario
-                  </a>
-                </li>';
-
-              
-                    
-                            echo '<li class="nav-item">
-                  <a class="nav-link" href="tarifas.php">
-                      <i class="fa fa-sign-out"></i> Tarifas
-                  </a>
-                </li>';
-            }
-                        
-                        ?>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php">
-                                <i class="fa fa-sign-out"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
-                                <i class="fa fa-sign-out"></i> Cerrar Sesión
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <?php include('navbar.php'); ?>
 
             <!-- Contenido principal -->
             <main class="col-md-8 ms-sm-auto col-lg-10 px-md-4">
@@ -152,16 +55,16 @@ if (isset($_SESSION['correo'])) {
                             <tbody>
                                 <?php
                                 // Conexión a la base de datos (ajusta los valores según tu configuración)
-                                $servername = "localhost";
-                                $username = "root";
-                                $password = "";
-                                $dbname = "parqueadero";
+                                // $servername = "localhost";
+                                // $username = "root";
+                                // $password = "";
+                                // $dbname = "parqueadero";
 
-                                $conn = new mysqli($servername, $username, $password, $dbname);
+                                // $conn = new mysqli($servername, $username, $password, $dbname);
 
-                                if ($conn->connect_error) {
-                                    die("Error de conexión: " . $conn->connect_error);
-                                }
+                                // if ($conn->connect_error) {
+                                //     die("Error de conexión: " . $conn->connect_error);
+                                // }
 
                                 $sql = "SELECT p.id, p.placa, p.tipo_parqueo, t.id, t.nombreTarifa, t.valorTarifa
                                 FROM placa AS p

@@ -1,21 +1,28 @@
 <?php
 
-
+date_default_timezone_set('America/Bogota');
 // Obtener la fecha actual
 $fecha_actual = date("Ymd");
 
 // Construir la ruta de la carpeta basada en la fecha actual
-//$carpeta = "C:/xampp/htdocs/parqueo/img/Normal/{$fecha_actual}";
+$carpeta = 'C:/xampp/htdocs/parqueo/img/Normal/' . $fecha_actual;
+//echo $carpeta;
+
 
 
 // // Ruta de la carpeta
-$carpeta = 'C:/xampp/htdocs/parqueo/img/Normal/20240128';
+//$carpeta = 'C:/xampp/htdocs/parqueo/img/Normal/20240205';
 
 // // Obtener la lista de archivos en la carpeta
 $files = glob($carpeta . '/*.*'); // Busca todos los archivos en la carpeta
 
 // Patrón de expresión regular para encontrar el texto después de un guion bajo seguido de números
-$pattern = '/_(\w{6})_/'; // Modificado para capturar solo los primeros 6 caracteres después del guion bajo
+//$pattern = '/_(\w{6})_/'; // Modificado para capturar solo los primeros 6 caracteres después del guion bajo
+//$pattern = '/_(\w{6}\d{1,2})_/'; // Modificado para capturar solo los primeros 6 caracteres seguidos de 1 o 2 dígitos después del guion bajo
+$pattern = '/_(\w{5}\d)_/';
+
+
+
 
 // Array para almacenar valores únicos encontrados
 $found_texts = array();
