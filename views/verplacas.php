@@ -14,7 +14,6 @@
 // session_start();
 //$tipoUsuario = isset($_SESSION['tipo_usuario']) ? $_SESSION['tipo_usuario'] : null;
 
-
 if (isset($_SESSION['correo'])) {
     // El usuario está autenticado, muestra el contenido 
 
@@ -150,7 +149,7 @@ if (isset($_SESSION['correo'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
     <script>
         function eliminarRegistro(placa) {
-            
+
             //console.log("id a eliminar: " + placa)
             if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
                 $.ajax({
