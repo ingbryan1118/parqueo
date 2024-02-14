@@ -17,9 +17,9 @@ $carpeta = 'C:/xampp/htdocs/parqueo/img/Normal/' . $fecha_actual;
 $files = glob($carpeta . '/*.*'); // Busca todos los archivos en la carpeta
 
 // Patrón de expresión regular para encontrar el texto después de un guion bajo seguido de números
-//$pattern = '/_(\w{6})_/'; // Modificado para capturar solo los primeros 6 caracteres después del guion bajo
+$pattern = '/_(\w{6})_/'; // Modificado para capturar solo los primeros 6 caracteres después del guion bajo
 //$pattern = '/_(\w{6}\d{1,2})_/'; // Modificado para capturar solo los primeros 6 caracteres seguidos de 1 o 2 dígitos después del guion bajo
-$pattern = '/_(\w{5}\d)_/';
+//$pattern = '/_(\w{5}\d)_/';
 
 
 
@@ -31,14 +31,14 @@ $found_texts = array();
 foreach ($files as $file) {
     // Obtener solo el nombre del archivo sin la ruta
     $filename = basename($file);
-    
+
     //echo "Nombre de archivo: $filename\n"; // Imprimir el nombre de archivo para depurar
-    
+
     // Buscar el patrón en el nombre del archivo
     if (preg_match($pattern, $filename, $matches)) {
         // El texto que coincide con el patrón estará en $matches[1]
         $found_text = $matches[1];
-        
+
         // Almacenar el texto encontrado en el array si no existe ya
         if (!in_array($found_text, $found_texts)) {
             $found_texts[] = $found_text;
@@ -47,7 +47,7 @@ foreach ($files as $file) {
 }
 
 //echo "Placas encontradas: ";
- // Imprimir el array de placas encontradas
+// Imprimir el array de placas encontradas
 
 $servername = "localhost";
 $username = "root";
@@ -68,11 +68,11 @@ foreach ($found_texts as $placa_actual) {
     echo "Placa actual: $placa_actual\n"; // Imprimir la placa actual para depurar
     $fecha_ingreso = date("Y-m-d"); // Formato datetime
     $hora_ingreso = date("H:i:s"); // Formato time
-    
+
     // Consulta para verificar si ya existe un registro con la misma placa, fecha de ingreso y estado 0
     $sql_check = "SELECT placa FROM parqueo WHERE placa = '$placa_actual' AND fecha_ingreso = '$fecha_ingreso' AND estado = 0";
     $result_check = $conn->query($sql_check);
-    
+
     // Verificar si la consulta se ejecutó correctamente
     if ($result_check === false) {
         echo "Error al ejecutar la consulta: " . $conn->error;
@@ -95,14 +95,24 @@ foreach ($found_texts as $placa_actual) {
                 $placa = $row["placa"];
                 $tipo_parqueo = $row["tipo_parqueo"];
                 $valor_tarifa = $row["valorTarifa"];
-        
+
+                if ($tipo_parqueo >= 9 && $tipo_parqueo <= 13) {
+                    $valor_tarifa = 0;
+                }
+
                 // Insertar los datos en la tabla "parqueo"
                 $sql_insert = "INSERT INTO parqueo (placa, tipo_parqueo, fecha_ingreso, hora_ingreso) 
                 VALUES ('$placa', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
             } else {
-                // Si no se encuentra la tarifa, se utiliza la tarifa con ID 1
-                $tipo_parqueo = 1; // Suponiendo que el ID de la tarifa por defecto es 1
-                
+                $last_character = substr($placa_actual, -1);
+                if (ctype_alpha($last_character)) {
+                    // Si el último caracter de la placa es una letra, se asigna el tipo de parqueo 2
+                    $tipo_parqueo = 2;
+                } else {
+                    // Si no, se asigna el tipo de parqueo 1
+                    $tipo_parqueo = 1;
+                }
+
                 // Insertar los datos en la tabla "parqueo"
                 $sql_insert = "INSERT INTO parqueo (placa, tipo_parqueo, fecha_ingreso, hora_ingreso) 
                 VALUES ('$placa_actual', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
@@ -125,10 +135,10 @@ foreach ($found_texts as $placa_actual) {
 //     $fecha_ingreso = date("Y-m-d"); // Formato datetime
 //     $hora_ingreso = date("H:i:s"); // Formato time
 //     // Consulta para obtener el tipo de parqueo y la tarifa asociada a la placa
-    
+
 //     $sql_check = "SELECT placa FROM parqueo WHERE placa = '$placa_actual' AND fecha_ingreso = '$fecha_ingreso' AND estado = 1";
 //     $result_check = $conn->query($sql_check);
-    
+
 //     // Verificar si la consulta se ejecutó correctamente
 //     if ($result_check === false) {
 //         echo "Error al ejecutar la consulta: " . $conn->error;
@@ -136,9 +146,9 @@ foreach ($found_texts as $placa_actual) {
 //         // Verificar si hay filas devueltas por la consulta
 //         if ($result_check->num_rows > 0) {
 //             // Si hay filas, la placa ya ha sido ingresada hoy con estado 1
-            
+
 //             //echo "La placa $placa_actual ya ha sido ingresada hoy con estado 1.\n";
-            
+
 //             $sql = "SELECT p.placa, p.tipo_parqueo, t.valorTarifa
 //             FROM placa p
 //             INNER JOIN tarifas t ON p.tipo_parqueo = t.id
@@ -150,7 +160,7 @@ foreach ($found_texts as $placa_actual) {
 //                 $placa = $row["placa"];
 //                 $tipo_parqueo = $row["tipo_parqueo"];
 //                 $valor_tarifa = $row["valorTarifa"];
-        
+
 //                 // Insertar los datos en la tabla "parqueo"
 //                 $sql_insert = "INSERT INTO parqueo (placa, tipo_parqueo, fecha_ingreso, hora_ingreso) 
 //                 VALUES ('$placa', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
@@ -162,7 +172,7 @@ foreach ($found_texts as $placa_actual) {
 //                 VALUES ('$placa_actual', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
 
 //             }
-            
+
 
 //         } else {
 //             // Si no hay filas, la placa no ha sido ingresada hoy con estado 1
@@ -180,7 +190,7 @@ foreach ($found_texts as $placa_actual) {
 //                 $placa = $row["placa"];
 //                 $tipo_parqueo = $row["tipo_parqueo"];
 //                 $valor_tarifa = $row["valorTarifa"];
-        
+
 //                 // Insertar los datos en la tabla "parqueo"
 //                 $sql_insert = "INSERT INTO parqueo (placa, tipo_parqueo, fecha_ingreso, hora_ingreso) 
 //                 VALUES ('$placa', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
@@ -196,10 +206,10 @@ foreach ($found_texts as $placa_actual) {
 //             }
 //         }
 //     }
-    
+
 
 //     // if ($result_check->num_rows > 0) {
-    
+
 //     // $sql = "SELECT p.placa, p.tipo_parqueo, t.valorTarifa
 //     //         FROM placa p
 //     //         INNER JOIN tarifas t ON p.tipo_parqueo = t.id
@@ -216,11 +226,11 @@ foreach ($found_texts as $placa_actual) {
 //     //             $placa = $row["placa"];
 //     //             $tipo_parqueo = $row["tipo_parqueo"];
 //     //             $valor_tarifa = $row["valorTarifa"];
-        
+
 //     //             // Insertar los datos en la tabla "parqueo"
 //     //             $sql_insert = "INSERT INTO parqueo (placa, tipo_parqueo, fecha_ingreso, hora_ingreso) 
 //     //             VALUES ('$placa', $tipo_parqueo, '$fecha_ingreso', '$hora_ingreso')";
-        
+
 //     //             if ($conn->query($sql_insert) === TRUE) {
 //     //                 echo "Registro insertado correctamente: Placa = $placa, Tarifa = $valor_tarifa\n";
 //     //             } else {
@@ -240,4 +250,3 @@ foreach ($found_texts as $placa_actual) {
 
 // Cerrar conexión
 $conn->close();
-?>

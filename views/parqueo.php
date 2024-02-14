@@ -230,7 +230,9 @@ if (isset($_SESSION['correo'])) {
                 }, // Pasar el costo como parámetro
                 success: function(response) {
                     // Actualización exitosa
-                   // console.log("Base de datos actualizada correctamente");
+                   
+                    var placa = document.getElementById("placaSalida").textContent;
+                    moverImagenes(placa);
 
                     // Generar el ticket de salida
                     generarTicket(placa, horaIngreso, horaSalida, tipo_parqueo);
@@ -370,20 +372,53 @@ if (tipo_parqueo >= 3 && tipo_parqueo <= 13) {
     }
 }
 
-// function procesarArchivos() {
-//            // Hacer una solicitud AJAX al servidor
-//             var xhr = new XMLHttpRequest();
-//             xhr.open('GET', '../controllers/procesador_imagenes.php', true); // Especifica el endpoint para procesar archivos
-//             xhr.onreadystatechange = function() {
-//                 if (xhr.readyState == 4 && xhr.status == 200) {
-//                     console.log('Archivos procesados correctamente');
-//                 }
-//             };
-//             xhr.send();
-//         }
+
+function moverImagenes(placa) {
+    var fechaActual = new Date();
+    var year = fechaActual.getFullYear();
+    var month = ('0' + (fechaActual.getMonth() + 1)).slice(-2);
+    var day = ('0' + fechaActual.getDate()).slice(-2);
+
+    // Construir la ruta de origen basada en la fecha actual
+    var rutaOrigen = "C:/xampp/htdocs/parqueo/img/Normal/" + year + month + day + "/";
+    console.log(rutaOrigen);
+
+    // Ruta de la carpeta destino
+    var rutaDestino = "C:/xampp/htdocs/parqueo/img/Normal/imgmovidas/";
+
+    // Hacer una petición Ajax o realizar cualquier operación necesaria para mover las imágenes
+    $.ajax({
+        type: "POST",
+        url: "../controllers/mover_imagenes.php",
+        data: {
+            placa: placa,
+            rutaOrigen: rutaOrigen,
+            rutaDestino: rutaDestino
+        },
+        success: function(response) {
+            console.log("Imágenes movidas correctamente");
+        },
+        error: function(error) {
+            console.error("Error al mover las imágenes: " + error.responseText);
+        }
+    });
+}
+
+
+function procesarArchivos() {
+           // Hacer una solicitud AJAX al servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../controllers/procesador_imagenes.php', true); // Especifica el endpoint para procesar archivos
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log('Archivos procesados correctamente');
+                }
+            };
+            xhr.send();
+        }
 
         
-//         setInterval(procesarArchivos, 5000);
+        setInterval(procesarArchivos, 5000);
         
         //setInterval(procesarArchivos, 180000);
 

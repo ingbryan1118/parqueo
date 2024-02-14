@@ -25,14 +25,18 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
     // ORDER BY id DESC
     // LIMIT 1";
 
-    $sql = "SELECT parqueo.*, tarifas.valorTarifa
-    FROM parqueo
-    JOIN tarifas ON parqueo.tipo_parqueo = tarifas.id
-    WHERE parqueo.placa = '$placaBuscada'
-      AND parqueo.fecha_salida IS NULL
-      AND parqueo.fecha_ingreso = CURDATE()
-    ORDER BY parqueo.id DESC
-    LIMIT 1 ";
+    $sql = "SELECT parqueo.*, 
+    CASE 
+        WHEN parqueo.tipo_parqueo IN (9, 10, 11, 12, 13) THEN 0 
+        ELSE tarifas.valorTarifa 
+    END AS valorTarifa
+FROM parqueo
+JOIN tarifas ON parqueo.tipo_parqueo = tarifas.id
+WHERE parqueo.placa = '$placaBuscada'
+AND parqueo.fecha_salida IS NULL
+AND parqueo.fecha_ingreso = CURDATE()
+ORDER BY parqueo.id DESC
+LIMIT 1";
 
     $result = $conn->query($sql);
 
@@ -73,6 +77,7 @@ if (isset($_GET['placa']) && !empty($_GET['placa'])) {
                 <p><strong>Fecha de Ingreso:</strong> $fechaIngreso</p>
                 <p><strong>Hora de Ingreso:</strong> $horaIngreso</p>
                 <p><strong>Valor Tarifa:</strong> $valorTarifa</p>
+                <h6> Hora o fración carros: $3000 Motos:$1000
                 <!-- Agrega otros detalles del ticket aquí -->
             </div>
             <script>

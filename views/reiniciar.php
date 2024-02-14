@@ -61,7 +61,8 @@ if (isset($_SESSION['correo'])) {
                 echo "<input type='checkbox' name='carpetas[]' value='$carpeta'>$nombre_carpeta<br>";
             }
         ?>
-        <button type="submit" class="btn btn-danger">Eliminar Carpetas Seleccionadas</button>
+        <br>
+        <button type="submit" class="btn btn-danger">Eliminar Contenido</button>
     </form>
     <div id="mensaje"></div>
                         </div>
