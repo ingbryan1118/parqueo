@@ -327,39 +327,53 @@ if (tipo_parqueo >= 3 && tipo_parqueo <= 13) {
     }
 }
         // Generar el contenido del ticket
-        var ticketContent = `
-            <html>
-            <head>
-                <title>Ticket de Salida</title>
-                <style>
-                    /* Estilos CSS para el ticket */
-                    body {
-                        font-family: Arial, sans-serif;
-                    }
-                    .ticket {
-                        width: 300px;
-                        padding: 10px;
-                        border: 1px solid #000;
-                    }
-                    .info {
-                        margin-bottom: 10px;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="ticket">
-                    <h2>Centro Comercial de la 34</h2>
-                    <h4>Ticket de Parqueo</h4>
-                    <div class="info">
-                        <p><strong>Placa:</strong> ${placa}</p>
-                        <p><strong>Hora de Ingreso:</strong> ${horaIngreso}</p>
-                        <p><strong>Hora de Salida:</strong> ${horaSalida}</p>
-                        <p><strong>Costo:</strong> ${costoTotal} pesos</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-        `;
+       // Obtener la fecha actual
+const fechaActual = new Date();
+
+// Obtener el día, mes y año
+const dia = fechaActual.getDate();
+const mes = fechaActual.getMonth() + 1; // Los meses comienzan desde 0
+const año = fechaActual.getFullYear();
+
+// Formatear la fecha como desees
+const fechaFormateada = `${dia}/${mes}/${año}`;
+
+// Luego, puedes agregar la fecha formateada al contenido del ticket
+var ticketContent = `
+    <html>
+    <head>
+        <title>Ticket de Salida</title>
+        <style>
+            /* Estilos CSS para el ticket */
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .ticket {
+                width: 300px;
+                padding: 10px;
+                border: 1px solid #000;
+            }
+            .info {
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ticket">
+            <h2>Centro Comercial de la 34</h2>
+            <h4>Ticket de Parqueo</h4>
+            <div class="info">
+                <p><strong>Fecha Salida:</strong> ${fechaFormateada}</p>
+                <p><strong>Placa:</strong> ${placa}</p>
+                <p><strong>Hora de Ingreso:</strong> ${horaIngreso}</p>
+                <p><strong>Hora de Salida:</strong> ${horaSalida}</p>
+                <p><strong>Costo:</strong> ${costoTotal} pesos</p>
+            </div>
+        </div>
+    </body>
+    </html>
+`;
+
 
         // Abrir una nueva ventana para mostrar el ticket y realizar la impresión
         var url = "../controllers/actualizar_salida.php?placa=" + encodeURIComponent(placa) + "&costo=" + costoTotal;

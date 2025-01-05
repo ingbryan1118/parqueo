@@ -77,7 +77,7 @@ LIMIT 1";
                 <p><strong>Fecha de Ingreso:</strong> $fechaIngreso</p>
                 <p><strong>Hora de Ingreso:</strong> $horaIngreso</p>
                 <p><strong>Valor Tarifa:</strong> $valorTarifa</p>
-                <h6> Hora o fración carros: $3000 Motos:$1000
+                <h6> Hora o fración carros: $4000 Motos:$1000
                 <!-- Agrega otros detalles del ticket aquí -->
             </div>
             <script>
